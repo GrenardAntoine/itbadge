@@ -52,6 +52,15 @@ public class GroupeServiceImpl implements GroupeService {
         return groupeRepository.findAll(pageable);
     }
 
+    /**
+     * Get all the Groupe with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<Groupe> findAllWithEagerRelationships(Pageable pageable) {
+        return groupeRepository.findAllWithEagerRelationships(pageable);
+    }
+    
 
     /**
      * Get one groupe by id.
@@ -63,7 +72,7 @@ public class GroupeServiceImpl implements GroupeService {
     @Transactional(readOnly = true)
     public Optional<Groupe> findOne(Long id) {
         log.debug("Request to get Groupe : {}", id);
-        return groupeRepository.findById(id);
+        return groupeRepository.findOneWithEagerRelationships(id);
     }
 
     /**

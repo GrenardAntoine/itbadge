@@ -40,6 +40,19 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_utilisateur">Utilisateur</label>
+                    <select class="form-control" id="field_utilisateur" name="utilisateur" [(ngModel)]="badgeage.utilisateur"  required>
+                        <option *ngIf="!editForm.value.utilisateur" [ngValue]="null" selected></option>
+                        <option [ngValue]="utilisateurOption.id === badgeage.utilisateur?.id ? badgeage.utilisateur : utilisateurOption" *ngFor="let utilisateurOption of utilisateurs; trackBy: trackUtilisateurById">{{utilisateurOption.id}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.utilisateur?.dirty && editForm.controls.utilisateur?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.utilisateur?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

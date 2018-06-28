@@ -17,6 +17,8 @@
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="isAdmin"><span>Is Admin</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="isProfesseur"><span>Is Professeur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupe.id"><span>Groupe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="user.login"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -25,6 +27,14 @@
                 <td><a [routerLink]="['/utilisateur', utilisateur.id, 'view' ]">{{utilisateur.id}}</a></td>
                 <td>{{utilisateur.isAdmin}}</td>
                 <td>{{utilisateur.isProfesseur}}</td>
+                <td>
+                    <div *ngIf="utilisateur.groupe">
+                        <a [routerLink]="['../groupe', utilisateur.groupe?.id, 'view' ]" >{{utilisateur.groupe?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    {{utilisateur.user?.login}}
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

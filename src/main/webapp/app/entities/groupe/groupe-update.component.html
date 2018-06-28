@@ -29,6 +29,12 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label for="field_listCours">List Cours</label>
+                    <select class="form-control" id="field_listCours" multiple name="listCours" [(ngModel)]="groupe.listCours">
+                        <option [ngValue]="getSelected(groupe.listCours, coursOption)" *ngFor="let coursOption of cours; trackBy: trackCoursById">{{coursOption.id}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

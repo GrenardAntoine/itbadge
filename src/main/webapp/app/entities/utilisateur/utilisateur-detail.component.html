@@ -13,6 +13,22 @@
                 <dd>
                     <span>{{utilisateur.isProfesseur}}</span>
                 </dd>
+                <dt><span>Groupe</span></dt>
+                <dd>
+                    <div *ngIf="utilisateur.groupe">
+                        <a [routerLink]="['/groupe', utilisateur.groupe?.id, 'view']">{{utilisateur.groupe?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span>List Cours</span></dt>
+                <dd>
+                    <span *ngFor="let listCours of utilisateur.listCours; let last = last">
+                        <a [routerLink]="['/cours', listCours?.id, 'view' ]">{{listCours.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{utilisateur.user?.login}}
+                </dd>
             </dl>
 
             <button type="submit"

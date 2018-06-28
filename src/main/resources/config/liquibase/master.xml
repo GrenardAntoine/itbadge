@@ -11,5 +11,9 @@
     <include file="config/liquibase/changelog/20180628090934_added_entity_Badgeage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180628091055_added_entity_Cours.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20180628090703_added_entity_constraints_Groupe.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180628090815_added_entity_constraints_Utilisateur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180628090934_added_entity_constraints_Badgeage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180628091055_added_entity_constraints_Cours.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

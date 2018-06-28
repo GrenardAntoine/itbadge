@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Utilisateur.
+    -->
+    <changeSet id="20180628090815-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="groupe_id"
+                                 baseTableName="utilisateur"
+                                 constraintName="fk_utilisateur_groupe_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="groupe"/>
+
+        <addForeignKeyConstraint baseColumnNames="utilisateurs_id"
+                                 baseTableName="utilisateur_list_cours"
+                                 constraintName="fk_utilisateur_list_cours_utilisateurs_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="utilisateur"/>
+        <addForeignKeyConstraint baseColumnNames="list_cours_id"
+                                 baseTableName="utilisateur_list_cours"
+                                 constraintName="fk_utilisateur_list_cours_list_cours_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cours"/>
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="utilisateur"
+                                 constraintName="fk_utilisateur_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+    </changeSet>
+</databaseChangeLog>

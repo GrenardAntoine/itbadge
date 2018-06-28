@@ -29,6 +29,17 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
+        <createTable tableName="groupe_list_cours">
+            <column name="list_cours_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="groupes_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="groupes_id, list_cours_id" tableName="groupe_list_cours"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

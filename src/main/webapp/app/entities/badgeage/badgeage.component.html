@@ -18,6 +18,7 @@
             <th jhiSortBy="currentDate"><span>Current Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="badgeageEleve"><span>Badgeage Eleve</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="badgeageCorrige"><span>Badgeage Corrige</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="utilisateur.id"><span>Utilisateur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -27,6 +28,11 @@
                 <td>{{badgeage.currentDate | date:'mediumDate'}}</td>
                 <td>{{badgeage.badgeageEleve | date:'medium'}}</td>
                 <td>{{badgeage.badgeageCorrige | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="badgeage.utilisateur">
+                        <a [routerLink]="['../utilisateur', badgeage.utilisateur?.id, 'view' ]" >{{badgeage.utilisateur?.id}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

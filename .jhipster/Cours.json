@@ -1,7 +1,28 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "listProfesseur",
+            "otherEntityName": "utilisateur",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "listCours"
+        },
+        {
+            "relationshipName": "description",
+            "otherEntityName": "description",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "listGroupe",
+            "otherEntityName": "groupe",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "listCours"
+        }
+    ],
     "fields": [
         {
             "fieldName": "nom",

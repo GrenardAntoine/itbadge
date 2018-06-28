@@ -52,6 +52,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return utilisateurRepository.findAll(pageable);
     }
 
+    /**
+     * Get all the Utilisateur with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<Utilisateur> findAllWithEagerRelationships(Pageable pageable) {
+        return utilisateurRepository.findAllWithEagerRelationships(pageable);
+    }
+    
 
     /**
      * Get one utilisateur by id.
@@ -63,7 +72,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Transactional(readOnly = true)
     public Optional<Utilisateur> findOne(Long id) {
         log.debug("Request to get Utilisateur : {}", id);
-        return utilisateurRepository.findById(id);
+        return utilisateurRepository.findOneWithEagerRelationships(id);
     }
 
     /**

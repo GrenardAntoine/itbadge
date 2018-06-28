@@ -1,5 +1,6 @@
 package com.itescia.itbadge.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -34,6 +35,11 @@ public class Badgeage implements Serializable {
 
     @Column(name = "badgeage_corrige")
     private Instant badgeageCorrige;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("listBageages")
+    private Utilisateur utilisateur;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -81,6 +87,19 @@ public class Badgeage implements Serializable {
 
     public void setBadgeageCorrige(Instant badgeageCorrige) {
         this.badgeageCorrige = badgeageCorrige;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public Badgeage utilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+        return this;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

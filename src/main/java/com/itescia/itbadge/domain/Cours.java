@@ -1,5 +1,7 @@
 package com.itescia.itbadge.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +10,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -36,6 +40,20 @@ public class Cours implements Serializable {
     @NotNull
     @Column(name = "date_fin", nullable = false)
     private Instant dateFin;
+
+    @ManyToMany(mappedBy = "listCours")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Utilisateur> listProfesseurs = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnoreProperties("")
+    private Description description;
+
+    @ManyToMany(mappedBy = "listCours")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Groupe> listGroupes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -83,6 +101,69 @@ public class Cours implements Serializable {
 
     public void setDateFin(Instant dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public Set<Utilisateur> getListProfesseurs() {
+        return listProfesseurs;
+    }
+
+    public Cours listProfesseurs(Set<Utilisateur> utilisateurs) {
+        this.listProfesseurs = utilisateurs;
+        return this;
+    }
+
+    public Cours addListProfesseur(Utilisateur utilisateur) {
+        this.listProfesseurs.add(utilisateur);
+        utilisateur.getListCours().add(this);
+        return this;
+    }
+
+    public Cours removeListProfesseur(Utilisateur utilisateur) {
+        this.listProfesseurs.remove(utilisateur);
+        utilisateur.getListCours().remove(this);
+        return this;
+    }
+
+    public void setListProfesseurs(Set<Utilisateur> utilisateurs) {
+        this.listProfesseurs = utilisateurs;
+    }
+
+    public Description getDescription() {
+        return description;
+    }
+
+    public Cours description(Description description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(Description description) {
+        this.description = description;
+    }
+
+    public Set<Groupe> getListGroupes() {
+        return listGroupes;
+    }
+
+    public Cours listGroupes(Set<Groupe> groupes) {
+        this.listGroupes = groupes;
+        return this;
+    }
+
+    public Cours addListGroupe(Groupe groupe) {
+        this.listGroupes.add(groupe);
+        groupe.getListCours().add(this);
+        return this;
+    }
+
+    public Cours removeListGroupe(Groupe groupe) {
+        this.listGroupes.remove(groupe);
+        groupe.getListCours().remove(this);
+        return this;
+    }
+
+    public void setListGroupes(Set<Groupe> groupes) {
+        this.listGroupes = groupes;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

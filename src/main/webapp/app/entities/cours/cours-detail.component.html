@@ -17,6 +17,12 @@
                 <dd>
                     <span>{{cours.dateFin}}</span>
                 </dd>
+                <dt><span>Description</span></dt>
+                <dd>
+                    <div *ngIf="cours.description">
+                        <a [routerLink]="['/description', cours.description?.id, 'view']">{{cours.description?.id}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

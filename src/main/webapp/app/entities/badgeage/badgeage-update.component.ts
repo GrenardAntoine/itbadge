@@ -4,9 +4,12 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { JhiAlertService } from 'ng-jhipster';
 
 import { IBadgeage } from 'app/shared/model/badgeage.model';
 import { BadgeageService } from './badgeage.service';
+import { IUtilisateur } from 'app/shared/model/utilisateur.model';
+import { UtilisateurService } from 'app/entities/utilisateur';
 
 @Component({
     selector: 'jhi-badgeage-update',
@@ -15,17 +18,30 @@ import { BadgeageService } from './badgeage.service';
 export class BadgeageUpdateComponent implements OnInit {
     private _badgeage: IBadgeage;
     isSaving: boolean;
+
+    utilisateurs: IUtilisateur[];
     currentDateDp: any;
     badgeageEleve: string;
     badgeageCorrige: string;
 
-    constructor(private badgeageService: BadgeageService, private activatedRoute: ActivatedRoute) {}
+    constructor(
+        private jhiAlertService: JhiAlertService,
+        private badgeageService: BadgeageService,
+        private utilisateurService: UtilisateurService,
+        private activatedRoute: ActivatedRoute
+    ) {}
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ badgeage }) => {
             this.badgeage = badgeage;
         });
+        this.utilisateurService.query().subscribe(
+            (res: HttpResponse<IUtilisateur[]>) => {
+                this.utilisateurs = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
     }
 
     previousState() {
@@ -54,6 +70,14 @@ export class BadgeageUpdateComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    trackUtilisateurById(index: number, item: IUtilisateur) {
+        return item.id;
     }
     get badgeage() {
         return this._badgeage;

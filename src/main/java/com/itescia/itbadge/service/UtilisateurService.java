@@ -28,7 +28,13 @@ public interface UtilisateurService {
      */
     Page<Utilisateur> findAll(Pageable pageable);
 
-
+    /**
+     * Get all the Utilisateur with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    Page<Utilisateur> findAllWithEagerRelationships(Pageable pageable);
+    
     /**
      * Get the "id" utilisateur.
      *

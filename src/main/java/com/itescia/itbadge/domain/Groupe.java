@@ -1,5 +1,6 @@
 package com.itescia.itbadge.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -28,6 +31,17 @@ public class Groupe implements Serializable {
     @Column(name = "nom", length = 30, nullable = false)
     private String nom;
 
+    @OneToMany(mappedBy = "groupe")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Utilisateur> listEleves = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "groupe_list_cours",
+               joinColumns = @JoinColumn(name = "groupes_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "list_cours_id", referencedColumnName = "id"))
+    private Set<Cours> listCours = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -48,6 +62,56 @@ public class Groupe implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public Set<Utilisateur> getListEleves() {
+        return listEleves;
+    }
+
+    public Groupe listEleves(Set<Utilisateur> utilisateurs) {
+        this.listEleves = utilisateurs;
+        return this;
+    }
+
+    public Groupe addListEleve(Utilisateur utilisateur) {
+        this.listEleves.add(utilisateur);
+        utilisateur.setGroupe(this);
+        return this;
+    }
+
+    public Groupe removeListEleve(Utilisateur utilisateur) {
+        this.listEleves.remove(utilisateur);
+        utilisateur.setGroupe(null);
+        return this;
+    }
+
+    public void setListEleves(Set<Utilisateur> utilisateurs) {
+        this.listEleves = utilisateurs;
+    }
+
+    public Set<Cours> getListCours() {
+        return listCours;
+    }
+
+    public Groupe listCours(Set<Cours> cours) {
+        this.listCours = cours;
+        return this;
+    }
+
+    public Groupe addListCours(Cours cours) {
+        this.listCours.add(cours);
+        cours.getListGroupes().add(this);
+        return this;
+    }
+
+    public Groupe removeListCours(Cours cours) {
+        this.listCours.remove(cours);
+        cours.getListGroupes().remove(this);
+        return this;
+    }
+
+    public void setListCours(Set<Cours> cours) {
+        this.listCours = cours;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

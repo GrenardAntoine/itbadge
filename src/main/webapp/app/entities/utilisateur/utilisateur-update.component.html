@@ -32,6 +32,26 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_groupe">Groupe</label>
+                    <select class="form-control" id="field_groupe" name="groupe" [(ngModel)]="utilisateur.groupe" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="groupeOption.id === utilisateur.groupe?.id ? utilisateur.groupe : groupeOption" *ngFor="let groupeOption of groupes; trackBy: trackGroupeById">{{groupeOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="field_listCours">List Cours</label>
+                    <select class="form-control" id="field_listCours" multiple name="listCours" [(ngModel)]="utilisateur.listCours">
+                        <option [ngValue]="getSelected(utilisateur.listCours, coursOption)" *ngFor="let coursOption of cours; trackBy: trackCoursById">{{coursOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_user">User</label>
+                    <select class="form-control" id="field_user" name="user" [(ngModel)]="utilisateur.user" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id === utilisateur.user?.id ? utilisateur.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

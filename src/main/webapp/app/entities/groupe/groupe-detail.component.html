@@ -9,6 +9,12 @@
                 <dd>
                     <span>{{groupe.nom}}</span>
                 </dd>
+                <dt><span>List Cours</span></dt>
+                <dd>
+                    <span *ngFor="let listCours of groupe.listCours; let last = last">
+                        <a [routerLink]="['/cours', listCours?.id, 'view' ]">{{listCours.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
             </dl>
 
             <button type="submit"

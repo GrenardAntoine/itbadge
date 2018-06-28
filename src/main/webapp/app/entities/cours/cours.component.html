@@ -18,6 +18,7 @@
             <th jhiSortBy="nom"><span>Nom</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="dateDebut"><span>Date Debut</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="dateFin"><span>Date Fin</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description.id"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -27,6 +28,11 @@
                 <td>{{cours.nom}}</td>
                 <td>{{cours.dateDebut | date:'medium'}}</td>
                 <td>{{cours.dateFin | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="cours.description">
+                        <a [routerLink]="['../description', cours.description?.id, 'view' ]" >{{cours.description?.id}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

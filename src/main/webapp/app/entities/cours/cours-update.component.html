@@ -63,6 +63,13 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_description">Description</label>
+                    <select class="form-control" id="field_description" name="description" [(ngModel)]="cours.description" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="descriptionOption.id === cours.description?.id ? cours.description : descriptionOption" *ngFor="let descriptionOption of descriptions; trackBy: trackDescriptionById">{{descriptionOption.id}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

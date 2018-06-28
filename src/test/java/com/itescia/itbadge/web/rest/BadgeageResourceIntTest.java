@@ -3,6 +3,7 @@ package com.itescia.itbadge.web.rest;
 import com.itescia.itbadge.ItbadgeApp;
 
 import com.itescia.itbadge.domain.Badgeage;
+import com.itescia.itbadge.domain.Utilisateur;
 import com.itescia.itbadge.repository.BadgeageRepository;
 import com.itescia.itbadge.service.BadgeageService;
 import com.itescia.itbadge.web.rest.errors.ExceptionTranslator;
@@ -99,6 +100,11 @@ public class BadgeageResourceIntTest {
             .currentDate(DEFAULT_CURRENT_DATE)
             .badgeageEleve(DEFAULT_BADGEAGE_ELEVE)
             .badgeageCorrige(DEFAULT_BADGEAGE_CORRIGE);
+        // Add required entity
+        Utilisateur utilisateur = UtilisateurResourceIntTest.createEntity(em);
+        em.persist(utilisateur);
+        em.flush();
+        badgeage.setUtilisateur(utilisateur);
         return badgeage;
     }
 

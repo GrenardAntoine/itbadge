@@ -43,6 +43,12 @@ public class CacheConfiguration {
             cm.createCache(com.itescia.itbadge.domain.Utilisateur.class.getName(), jcacheConfiguration);
             cm.createCache(com.itescia.itbadge.domain.Badgeage.class.getName(), jcacheConfiguration);
             cm.createCache(com.itescia.itbadge.domain.Cours.class.getName(), jcacheConfiguration);
+            cm.createCache(com.itescia.itbadge.domain.Groupe.class.getName() + ".listEleves", jcacheConfiguration);
+            cm.createCache(com.itescia.itbadge.domain.Groupe.class.getName() + ".listCours", jcacheConfiguration);
+            cm.createCache(com.itescia.itbadge.domain.Utilisateur.class.getName() + ".listBageages", jcacheConfiguration);
+            cm.createCache(com.itescia.itbadge.domain.Utilisateur.class.getName() + ".listCours", jcacheConfiguration);
+            cm.createCache(com.itescia.itbadge.domain.Cours.class.getName() + ".listProfesseurs", jcacheConfiguration);
+            cm.createCache(com.itescia.itbadge.domain.Cours.class.getName() + ".listGroupes", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
