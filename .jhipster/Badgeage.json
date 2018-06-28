@@ -1,0 +1,29 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "currentDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "badgeageEleve",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "badgeageCorrige",
+            "fieldType": "Instant"
+        }
+    ],
+    "changelogDate": "20180628090934",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "badgeage",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}
