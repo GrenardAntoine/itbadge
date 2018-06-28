@@ -9,3 +9,8 @@ export * from './shared-libs.module';
 export * from './shared-common.module';
 export * from './shared.module';
 export * from './util/datepicker-adapter';
+export * from './model/badgeage.model';
+export * from './model/cours.model';
+export * from './model/description.model';
+export * from './model/groupe.model';
+export * from './model/utilisateur.model';
