@@ -16,6 +16,8 @@ import { ItbadgeAppRoutingModule } from './app-routing.module';
 import { ItbadgeHomeModule } from './home/home.module';
 import { ItbadgeAccountModule } from './account/account.module';
 import { ItbadgeEntityModule } from './entities/entity.module';
+import { LoginModule } from './login/login.module';
+
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 
@@ -28,7 +30,8 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         ItbadgeCoreModule,
         ItbadgeHomeModule,
         ItbadgeAccountModule,
-        ItbadgeEntityModule
+        ItbadgeEntityModule,
+        LoginModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],

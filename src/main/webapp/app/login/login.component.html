@@ -1,0 +1,34 @@
+<div>
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-sm-8">
+            <h1>Se connecter</h1>
+            <div class="alert alert-danger" *ngIf="authenticationError">
+                <strong>Échec de la connexion </strong> Veuillez vérifier vos identifiants et réessayer.
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-sm-8">
+            <form class="form" role="form" (ngSubmit)="login()">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Your username"
+                           [(ngModel)]="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Your password"
+                           [(ngModel)]="password">
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="rememberMe">
+                        <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe" [(ngModel)]="rememberMe" checked>
+                        <span>Se souvenir de moi</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+            </form>
+            <p></p>
+        </div>
+    </div>
+</div>
