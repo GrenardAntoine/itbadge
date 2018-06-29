@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
+import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,12 +19,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 @Configuration
 @EnableWebSecurity
@@ -59,7 +62,39 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             throw new BeanInitializationException("Security configuration failed", e);
         }
     }
+    
+    @Inject
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.ldapAuthentication()
+        	.userSearchBase("dc=itin2,dc=fr") //don't add the base
+        	.userSearchFilter("(uid={0})")
+        	.contextSource(getContextSource());
+    }
+    @Bean
+    public LdapContextSource getContextSource() {
+    	LdapContextSource contextSource = new LdapContextSource();
+        contextSource.setUrl("ldap://212.73.217.202:17052");
+        contextSource.setBase("dc=itin2,dc=fr");
+        contextSource.setUserDn("cn=admin,dc=itin2,dc=fr");
+        contextSource.setPassword("root");
+        contextSource.afterPropertiesSet(); //needed otherwise you will have a NullPointerException in spring
 
+        return contextSource;
+    }
+
+    /*@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth
+			.ldapAuthentication()
+			.contextSource()
+				.url("ldap://212.73.217.202:17052/dc=itin2,dc=fr")
+					.managerDn("cn=admin,dc=itin2,dc=fr")
+					.managerPassword("root")
+				.and()
+					.userDnPatterns("uid={0},ou=MIS2018");
+	}*/
+    
+    
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -68,7 +103,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new LdapShaPasswordEncoder();
     }
 
     @Override
@@ -118,7 +153,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
+
     private JWTConfigurer securityConfigurerAdapter() {
         return new JWTConfigurer(tokenProvider);
     }
+    
+    
 }
