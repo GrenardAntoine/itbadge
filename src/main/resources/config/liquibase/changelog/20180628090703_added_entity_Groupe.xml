@@ -28,7 +28,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="groupe_list_cours">
             <column name="list_cours_id" type="bigint">
                 <constraints nullable="false"/>
@@ -39,7 +39,17 @@
         </createTable>
 
         <addPrimaryKey columnNames="groupes_id, list_cours_id" tableName="groupe_list_cours"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+
+    <changeSet author="AntoineGrenard" id="1">
+        <ext:loadData identityInsertEnabled="true" commentLineStartsWith="#"
+                      encoding="UTF-8"
+                      file="config/liquibase/changelog/data/groupe.csv"
+                      quotchar="&#34;"
+                      separator=";"
+                      tableName="groupe">
+        </ext:loadData>
+    </changeSet>
 </databaseChangeLog>

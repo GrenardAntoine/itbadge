@@ -18,6 +18,7 @@
         Added the entity Description.
     -->
     <changeSet id="20180628090602-1" author="jhipster">
+
         <createTable tableName="description">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
@@ -28,7 +29,18 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+
+    <changeSet author="AntoineGrenard" id="0">
+        <ext:loadData identityInsertEnabled="true" commentLineStartsWith="#"
+                      encoding="UTF-8"
+                      file="config/liquibase/changelog/data/description.csv"
+                      quotchar="&#34;"
+                      separator=";"
+                      tableName="description">
+        </ext:loadData>
+    </changeSet>
+
 </databaseChangeLog>
