@@ -1,5 +1,6 @@
 package com.itescia.itbadge.service.impl;
 
+import com.itescia.itbadge.security.SecurityUtils;
 import com.itescia.itbadge.service.UtilisateurService;
 import com.itescia.itbadge.domain.Utilisateur;
 import com.itescia.itbadge.repository.UtilisateurRepository;
@@ -60,7 +61,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public Page<Utilisateur> findAllWithEagerRelationships(Pageable pageable) {
         return utilisateurRepository.findAllWithEagerRelationships(pageable);
     }
-    
+
 
     /**
      * Get one utilisateur by id.
@@ -84,5 +85,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public void delete(Long id) {
         log.debug("Request to delete Utilisateur : {}", id);
         utilisateurRepository.deleteById(id);
+    }
+
+
+
+
+
+    @Override
+    public Optional<Utilisateur> getCurrentUtilisateur() {
+
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        return utilisateurRepository.findOneByUserLogin(login.get());
+
     }
 }

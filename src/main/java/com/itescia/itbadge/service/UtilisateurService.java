@@ -34,7 +34,7 @@ public interface UtilisateurService {
      * @return the list of entities
      */
     Page<Utilisateur> findAllWithEagerRelationships(Pageable pageable);
-    
+
     /**
      * Get the "id" utilisateur.
      *
@@ -49,4 +49,7 @@ public interface UtilisateurService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+
+    public Optional<Utilisateur> getCurrentUtilisateur();
 }
