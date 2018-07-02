@@ -124,4 +124,16 @@ public class BadgeageResource {
         badgeageService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+
+
+    @GetMapping("/badgeages/current")
+    @Timed
+    public ResponseEntity<List<Badgeage>> getAllBadgeagesByCurrentUtilisateur(Pageable pageable) {
+        log.debug("REST request to get a page of Badgeages by current utilisateur");
+        Page<Badgeage> page = badgeageService.findByUtilisateur(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/badgeages/current");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 }

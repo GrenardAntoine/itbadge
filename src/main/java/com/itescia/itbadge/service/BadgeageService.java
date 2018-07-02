@@ -43,4 +43,7 @@ public interface BadgeageService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+
+    Page<Badgeage> findByUtilisateur(Pageable pageable);
 }
