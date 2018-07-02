@@ -42,7 +42,17 @@
         </createTable>
         <dropDefaultValue tableName="cours" columnName="date_debut" columnDataType="datetime"/>
         <dropDefaultValue tableName="cours" columnName="date_fin" columnDataType="datetime"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+
+    <changeSet author="AntoineGrenard" id="1">
+        <ext:loadData identityInsertEnabled="true" commentLineStartsWith="#"
+                      encoding="UTF-8"
+                      file="config/liquibase/changelog/data/cours.csv"
+                      quotchar="&#34;"
+                      separator=";"
+                      tableName="cours">
+        </ext:loadData>
+    </changeSet>
 </databaseChangeLog>
