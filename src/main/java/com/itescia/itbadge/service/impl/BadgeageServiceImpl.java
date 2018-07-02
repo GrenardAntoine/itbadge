@@ -1,8 +1,10 @@
 package com.itescia.itbadge.service.impl;
 
+import com.itescia.itbadge.domain.Utilisateur;
 import com.itescia.itbadge.service.BadgeageService;
 import com.itescia.itbadge.domain.Badgeage;
 import com.itescia.itbadge.repository.BadgeageRepository;
+import com.itescia.itbadge.service.UtilisateurService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +25,11 @@ public class BadgeageServiceImpl implements BadgeageService {
     private final Logger log = LoggerFactory.getLogger(BadgeageServiceImpl.class);
 
     private final BadgeageRepository badgeageRepository;
+    private final UtilisateurService utilisateurService;
 
-    public BadgeageServiceImpl(BadgeageRepository badgeageRepository) {
+    public BadgeageServiceImpl(BadgeageRepository badgeageRepository, UtilisateurService utilisateurService) {
         this.badgeageRepository = badgeageRepository;
+        this.utilisateurService = utilisateurService;
     }
 
     /**
@@ -76,4 +80,12 @@ public class BadgeageServiceImpl implements BadgeageService {
         log.debug("Request to delete Badgeage : {}", id);
         badgeageRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Badgeage> findByUtilisateur(Pageable pageable) {
+        Optional<Utilisateur> utilisateur = utilisateurService.getCurrentUtilisateur();
+        return badgeageRepository.findByUtilisateur(utilisateur.get(), pageable);
+    }
+
+
 }
