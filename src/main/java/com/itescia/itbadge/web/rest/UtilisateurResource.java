@@ -1,6 +1,7 @@
 package com.itescia.itbadge.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.itescia.itbadge.domain.User;
 import com.itescia.itbadge.domain.Utilisateur;
 import com.itescia.itbadge.service.UtilisateurService;
 import com.itescia.itbadge.web.rest.errors.BadRequestAlertException;
@@ -129,5 +130,12 @@ public class UtilisateurResource {
         log.debug("REST request to delete Utilisateur : {}", id);
         utilisateurService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+
+    @GetMapping("/currentUtilisateur")
+    @Timed
+    public Optional<Utilisateur> test(Pageable pageable) {
+        return utilisateurService.getCurrentUtilisateur();
     }
 }

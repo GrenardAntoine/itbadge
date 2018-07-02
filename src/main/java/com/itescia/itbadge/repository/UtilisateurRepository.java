@@ -27,4 +27,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     @Query("select utilisateur from Utilisateur utilisateur left join fetch utilisateur.listCours where utilisateur.id =:id")
     Optional<Utilisateur> findOneWithEagerRelationships(@Param("id") Long id);
 
+    @Query("select utilisateur from Utilisateur utilisateur where utilisateur.user.login =:login")
+    Optional<Utilisateur> findOneByUserLogin(@Param("login") String login);
 }
