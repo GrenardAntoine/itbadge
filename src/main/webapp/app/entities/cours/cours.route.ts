@@ -27,7 +27,7 @@ export class CoursResolve implements Resolve<ICours> {
 
 export const coursRoute: Routes = [
     {
-        path: 'cours',
+        path: 'adminCours',
         component: CoursComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -40,7 +40,7 @@ export const coursRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cours/:id/view',
+        path: 'adminCours/:id/view',
         component: CoursDetailComponent,
         resolve: {
             cours: CoursResolve
@@ -52,7 +52,7 @@ export const coursRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cours/new',
+        path: 'adminCours/new',
         component: CoursUpdateComponent,
         resolve: {
             cours: CoursResolve
@@ -64,7 +64,7 @@ export const coursRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cours/:id/edit',
+        path: 'adminCours/:id/edit',
         component: CoursUpdateComponent,
         resolve: {
             cours: CoursResolve
@@ -79,7 +79,7 @@ export const coursRoute: Routes = [
 
 export const coursPopupRoute: Routes = [
     {
-        path: 'cours/:id/delete',
+        path: 'adminCours/:id/delete',
         component: CoursDeletePopupComponent,
         resolve: {
             cours: CoursResolve

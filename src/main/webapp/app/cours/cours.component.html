@@ -1,0 +1,61 @@
+<div class="container">
+    <h1>Cours</h1>
+
+    <div class="row">
+        <div class="col-3">
+            Cours : <br>
+            <select [(ngModel)]="listCours" class="form-control">
+                <option value="" disabled selected>Cours</option>
+            </select>
+        </div>
+        <div class="col-3">
+            Horaire : <br>
+            <select [(ngModel)]="listCours" class="form-control">
+                <option *ngFor="let cours of listCours" [ngValue]="cours.id">{{cours.dateDebut}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            Nom : <br>
+            Description : <br>
+            <a>Modifier</a>
+        </div>
+        <div class="col-9">
+            {{listCours[0].nom}}<br>
+            {{listCours[0].description.contenu}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+            Nombre délève présent le matin : <br>
+            Nombre d'élève présent l'après-midi :
+        </div>
+        <div class="col-3">
+            <input typ="text" name="presMatin" class="form-control"><br>
+            <input typ="text" name="presAprem" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <tr>
+                    <th></th>
+                    <th>Horaire élève</th>
+                    <th>Horaire pris en compte</th>
+                    <th>Horaire élève</th>
+                    <th>Horaire pris en compte</th>
+                </tr>
+                <tr *ngFor="let eleve of listEleve">
+                    <td>{{eleve.nom}} {{eleve.prenom}}</td>
+                    <td>{{eleve.listBadgeage[0].badgeageEleve}}</td>
+                    <td>{{eleve.listBadgeage[0].badgeageCorrige}}</td>
+                    <td>{{eleve.listBadgeage[1].badgeageEleve}}</td>
+                    <td>{{eleve.listBadgeage[1].badgeageCorrige}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

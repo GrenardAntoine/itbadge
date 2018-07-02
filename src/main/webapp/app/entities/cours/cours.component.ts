@@ -69,7 +69,7 @@ export class CoursComponent implements OnInit, OnDestroy {
     }
 
     transition() {
-        this.router.navigate(['/cours'], {
+        this.router.navigate(['/adminCours'], {
             queryParams: {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -82,7 +82,7 @@ export class CoursComponent implements OnInit, OnDestroy {
     clear() {
         this.page = 0;
         this.router.navigate([
-            '/cours',
+            '/adminCours',
             {
                 page: this.page,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')

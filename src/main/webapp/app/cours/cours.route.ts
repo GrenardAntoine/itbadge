@@ -1,13 +1,13 @@
 import { Route } from '@angular/router';
-import { HomeComponent } from './home.component';
+import { CoursComponent } from './cours.component';
 import { UserRouteAccessService } from '../core/auth/user-route-access-service';
 
-export const HOME_ROUTE: Route = {
-    path: '',
-    component: HomeComponent,
+export const COURS_ROUTE: Route = {
+    path: 'cours',
+    component: CoursComponent,
     data: {
         authorities: ['ROLE_USER'],
-        pageTitle: 'ItBadge - Accueil'
+        pageTitle: 'ItBadge - Cours'
     },
     canActivate: [UserRouteAccessService]
 };

@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span>Cours</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-cours" [routerLink]="['/cours/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-cours" [routerLink]="['/adminCours/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Cours
@@ -24,7 +24,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let cours of cours ;trackBy: trackId">
-                <td><a [routerLink]="['/cours', cours.id, 'view' ]">{{cours.id}}</a></td>
+                <td><a [routerLink]="['/adminCours', cours.id, 'view' ]">{{cours.id}}</a></td>
                 <td>{{cours.nom}}</td>
                 <td>{{cours.dateDebut | date:'medium'}}</td>
                 <td>{{cours.dateFin | date:'medium'}}</td>
@@ -36,13 +36,13 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['/cours', cours.id, 'view' ]"
+                                [routerLink]="['/adminCours', cours.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/cours', cours.id, 'edit']"
+                                [routerLink]="['/adminCours', cours.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
