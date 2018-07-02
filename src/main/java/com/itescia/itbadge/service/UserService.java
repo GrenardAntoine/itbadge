@@ -16,6 +16,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.itescia.itbadge.web.rest.errors.InvalidPasswordException;
 import org.springframework.stereotype.Service;
@@ -119,7 +120,7 @@ public class UserService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
-        user.setImageUrl(userDTO.getImageUrl());
+        user.setImageUrl("");
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
@@ -132,8 +133,10 @@ public class UserService {
                 .map(Optional::get)
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
+            System.err.println(user.getAuthorities().toString());
         }
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+       
+        String encryptedPassword = new BCryptPasswordEncoder().encode(RandomUtil.generatePassword());;
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());

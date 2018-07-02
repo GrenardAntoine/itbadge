@@ -81,18 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         return contextSource;
     }
-
-    /*@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.ldapAuthentication()
-			.contextSource()
-				.url("ldap://212.73.217.202:17052/dc=itin2,dc=fr")
-					.managerDn("cn=admin,dc=itin2,dc=fr")
-					.managerPassword("root")
-				.and()
-					.userDnPatterns("uid={0},ou=MIS2018");
-	}*/
     
     
     @Override
