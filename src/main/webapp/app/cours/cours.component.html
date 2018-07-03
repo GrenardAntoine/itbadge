@@ -5,7 +5,7 @@
         <div class="col-3">
             Cours : <br>
             <select [(ngModel)]="listCours" class="form-control">
-                <option value="" disabled selected>Cours</option>
+                <option *ngFor="let cours of listCours" [ngValue]="cours.id">{{cours.nom}}</option>
             </select>
         </div>
         <div class="col-3">
@@ -18,12 +18,16 @@
 
     <div class="row">
         <div class="col-3">
-            Nom : <br>
+            Nom : {{listCours[0].nom}} <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
             Description : <br>
             <a>Modifier</a>
         </div>
-        <div class="col-9">
-            {{listCours[0].nom}}<br>
+        <div class="col-10">
+            <br>
             {{listCours[0].description.contenu}}
         </div>
     </div>
@@ -31,10 +35,16 @@
     <div class="row">
         <div class="col-4">
             Nombre délève présent le matin : <br>
-            Nombre d'élève présent l'après-midi :
         </div>
         <div class="col-3">
             <input typ="text" name="presMatin" class="form-control"><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            Nombre délève présent le matin : <br>
+        </div>
+        <div class="col-3">
             <input typ="text" name="presAprem" class="form-control">
         </div>
     </div>
