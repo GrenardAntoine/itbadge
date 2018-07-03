@@ -81,9 +81,6 @@ export class BadgeageService {
     }
 
     badger(badgeage: IBadgeage): Observable<EntityResponseType> {
-        const copy = this.convertDateFromClient(badgeage);
-        return this.http
-            .post<IBadgeage>(this.resourceUrl + '/addBadgageUser', copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertDateFromServer(res));
+        return this.http.post<IBadgeage>(this.resourceUrl + '/addBadgageUser', { observe: 'response' });
     }
 }

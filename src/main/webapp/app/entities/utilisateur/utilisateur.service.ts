@@ -35,4 +35,8 @@ export class UtilisateurService {
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
+
+    getCurrentEleve(): Observable<EntityResponseType> {
+        return this.http.get<IUtilisateur[]>(this.resourceUrl + '/currentCours', { observe: 'response' });
+    }
 }

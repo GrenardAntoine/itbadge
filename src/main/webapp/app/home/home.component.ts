@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { JhiEventManager } from 'ng-jhipster';
-import * as moment from 'moment';
 
 import { Principal, Account } from 'app/core';
 import { Router } from '@angular/router';
 
-import { Cours, ICours } from '../shared/model/cours.model';
-import { Utilisateur } from '../shared/model/utilisateur.model';
-import { Badgeage } from '../shared/model/badgeage.model';
-import { HomeService } from './home.service';
+import { ICours } from '../shared/model/cours.model';
+import { IUtilisateur } from '../shared/model/utilisateur.model';
+import { IBadgeage } from '../shared/model/badgeage.model';
+
 import { CoursService } from '../entities/cours/cours.service';
 import { BadgeageService } from '../entities/badgeage/badgeage.service';
+import { UtilisateurService } from '../entities/utilisateur/utilisateur.service';
+
+import moment = require('moment');
 
 @Component({
     selector: 'jhi-home',
@@ -19,16 +21,17 @@ import { BadgeageService } from '../entities/badgeage/badgeage.service';
 })
 export class HomeComponent implements OnInit {
     account: Account = null;
-    listEleveBadgeage: Utilisateur[] = [];
+    listCurrentEleve: IUtilisateur[] = [];
     cours: ICours = null;
-    listBadgeage: Badgeage[] = [];
+    listBadgeage: IBadgeage[] = [];
 
     constructor(
         private principal: Principal,
         private eventManager: JhiEventManager,
         private router: Router,
         private coursService: CoursService,
-        private badgeageService: BadgeageService
+        private badgeageService: BadgeageService,
+        private utilisateurService: UtilisateurService
     ) {}
 
     ngOnInit() {
@@ -37,9 +40,16 @@ export class HomeComponent implements OnInit {
 
             if (this.account.authorities.includes('ROLE_ADMIN')) {
             } else if (this.account.authorities.includes('ROLE_PROFESSEUR')) {
-                // this.homeService.getListEleveBadgeage().subscribe((res) => {
-                //     this.listEleveBadgeage = res;
-                // });
+                this.coursService.getCurrentCours().subscribe(res => {
+                    this.cours = res.body;
+                    let dateCours = this.cours.dateDebut.format('YYYY-MM-DD');
+                    for (groupe in this.cours.listGroupes) {
+                        this.groupeService.findBadgeageGroupe(groupe.id, dateCours).subscribe(res => {
+                            this.listCurrentEleve.push(res[0].listEleves);
+                            console.log(this.listCurrentEleve);
+                        });
+                    }
+                });
             } else if (this.account.authorities.includes('ROLE_USER')) {
                 this.coursService.getCurrentCours().subscribe(res => {
                     this.cours = res.body;
@@ -47,7 +57,6 @@ export class HomeComponent implements OnInit {
 
                 this.badgeageService.getListTodayBadgeageForStudent().subscribe(res => {
                     this.listBadgeage = res.body;
-                    console.log(this.listBadgeage);
                 });
             }
         });
@@ -82,9 +91,8 @@ export class HomeComponent implements OnInit {
 
     badger() {
         this.badgeageService.badger().subscribe(res => {
-            this.badgeageService.getListTodayBadgeageForStudent().subscribe(res => {
-                this.listBadgeage = res.body;
-                console.log(this.listBadgeage);
+            this.badgeageService.getListTodayBadgeageForStudent().subscribe(res2 => {
+                this.listBadgeage = res2.body;
             });
         });
     }
