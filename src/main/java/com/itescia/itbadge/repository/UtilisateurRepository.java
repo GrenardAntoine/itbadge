@@ -31,5 +31,5 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     @Query("select utilisateur from Utilisateur utilisateur where utilisateur.user.login =:login")
     Optional<Utilisateur> findOneByUserLogin(@Param("login") String login);
 
-    List<Utilisateur> findByGroupe(Groupe groupe);
+    List<Utilisateur> findByGroupeContains(Groupe groupe);
 }

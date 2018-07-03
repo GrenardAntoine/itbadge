@@ -91,36 +91,14 @@ public class CoursServiceImpl implements CoursService {
     @Override
     public Optional<Cours> findOneByUtilisateurAndDateDebut() {
         Optional<Utilisateur> utilisateur = utilisateurService.getCurrentUtilisateur();
-        Instant DateDebut = Instant.now();
+        Instant currentDate = Instant.now();
         if(utilisateur.get().isIsProfesseur()) {
-            Set<Utilisateur> listUtilisateur = new AbstractSet<Utilisateur>() {
-                @Override
-                public Iterator<Utilisateur> iterator() {
-                    return null;
-                }
 
-                @Override
-                public int size() {
-                    return 0;
-                }
-            };
-            listUtilisateur.add(utilisateur.get());
-            return coursRepository.findOneByListProfesseursContainsAndDateDebut(utilisateur.get(),DateDebut);
+            return coursRepository.findOneByListProfesseursContainsAndDateDebutBeforeAndDateFinAfter(utilisateur.get(),currentDate,currentDate);
         }
         else {
-            Set<Groupe> listGroupe = new AbstractSet<Groupe>() {
-                @Override
-                public Iterator<Groupe> iterator() {
-                    return null;
-                }
 
-                @Override
-                public int size() {
-                    return 0;
-                }
-            };
-            listGroupe.add(utilisateur.get().getGroupe());
-            return coursRepository.findOneByListGroupesContainsAndDateDebut(utilisateur.get().getGroupe(), DateDebut);
+            return coursRepository.findOneByListGroupesContainsAndDateDebutBeforeAndDateFinAfter(utilisateur.get().getGroupe(), currentDate, currentDate);
         }
     }
 
@@ -129,19 +107,8 @@ public class CoursServiceImpl implements CoursService {
         Optional<Utilisateur> utilisateur = utilisateurService.getCurrentUtilisateur();
         Instant DateDebut = Instant.now();
         if(utilisateur.get().isIsProfesseur()) {
-            Set<Utilisateur> listUtilisateur = new AbstractSet<Utilisateur>() {
-                @Override
-                public Iterator<Utilisateur> iterator() {
-                    return null;
-                }
 
-                @Override
-                public int size() {
-                    return 0;
-                }
-            };
-            listUtilisateur.add(utilisateur.get());
-            return coursRepository.findByListProfesseurs(listUtilisateur,pageable);
+            return coursRepository.findByListProfesseursContains(utilisateur.get(),pageable);
         }
         return null;
     }
@@ -152,19 +119,8 @@ public class CoursServiceImpl implements CoursService {
         Optional<Utilisateur> utilisateur = utilisateurService.getCurrentUtilisateur();
         Instant DateDebut = Instant.now();
         if(utilisateur.get().isIsProfesseur()) {
-            Set<Utilisateur> listUtilisateur = new AbstractSet<Utilisateur>() {
-                @Override
-                public Iterator<Utilisateur> iterator() {
-                    return null;
-                }
 
-                @Override
-                public int size() {
-                    return 0;
-                }
-            };
-            listUtilisateur.add(utilisateur.get());
-            return coursRepository.findByListProfesseursUnique(listUtilisateur,pageable);
+            return coursRepository.findDistinctByListProfesseursContains(utilisateur.get(),pageable);
         }
         return null;
     }

@@ -20,13 +20,12 @@ import java.util.Set;
 @Repository
 public interface CoursRepository extends JpaRepository<Cours, Long> {
 
-    //@Query("select cours from Cours cours where cours.listProfesseurs =?1 and cours.dateDebut like ?2%");
-    Optional<Cours> findOneByListProfesseursContainsAndDateDebut(Utilisateur professeur, Instant dateDebut);
+    //@Query("select cours from Cours cours where (?1 in (select listprofes.utilisateurs_id from utilisateur_list_cours listprofes where cours.id=listprofes.list_cours_id)) and (cours.dateDebut > ?2 and cours.dateFin < ?2) ")
+    Optional<Cours> findOneByListProfesseursContainsAndDateDebutBeforeAndDateFinAfter(Utilisateur listProfesseur,Instant dateDebut,Instant dateFin);
 
-    Optional<Cours> findOneByListGroupesContainsAndDateDebut(Groupe groupes, Instant dateDebut);
+    Optional<Cours> findOneByListGroupesContainsAndDateDebutBeforeAndDateFinAfter(Groupe groupes, Instant dateDebut, Instant dateFin);
 
-    Page<Cours> findByListProfesseurs(Set<Utilisateur> professeur, Pageable pageable);
+    Page<Cours> findByListProfesseursContains(Utilisateur professeur, Pageable pageable);
 
-    @Query("select distinct cours from Cours cours where cours.listProfesseurs =?1 ")
-    Page<Cours> findByListProfesseursUnique(Set<Utilisateur> professeur, Pageable pageable);
+    Page<Cours> findDistinctByListProfesseursContains(Utilisateur professeur, Pageable pageable);
 }

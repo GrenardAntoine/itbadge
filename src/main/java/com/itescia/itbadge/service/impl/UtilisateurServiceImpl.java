@@ -112,24 +112,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public List<Utilisateur> findStudent() {
         List<Utilisateur> listEleve = new ArrayList<Utilisateur>();
         Optional<Utilisateur> utilisateur = getCurrentUtilisateur();
-        Set<Utilisateur> listUtilisateur = new AbstractSet<Utilisateur>() {
-            @Override
-            public Iterator<Utilisateur> iterator() {
-                return null;
-            }
-
-            @Override
-            public int size() {
-                return 0;
-            }
-        };
-        listUtilisateur.add(utilisateur.get());
         Instant currentDate = Instant.now();
-        Optional<Cours> currentCours = coursRepository.findOneByListProfesseursContainsAndDateDebut(utilisateur.get(),currentDate);
+        Optional<Cours> currentCours = coursRepository.findOneByListProfesseursContainsAndDateDebutBeforeAndDateFinAfter(utilisateur.get(),currentDate,currentDate);
 
         Iterator it = currentCours.get().getListGroupes().iterator();
         while(it.hasNext())
-            listEleve.addAll(utilisateurRepository.findByGroupe((Groupe)it.next()));
+            listEleve.addAll(utilisateurRepository.findByGroupeContains((Groupe)it.next()));
 
         return listEleve;
     }
