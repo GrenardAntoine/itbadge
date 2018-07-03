@@ -6,6 +6,7 @@ import com.itescia.itbadge.domain.Groupe;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,4 +54,6 @@ public interface GroupeService {
     void delete(Long id);
 
     Set<Groupe> findByCours(Cours cours);
+
+    Page<Groupe> findBadgeageGroupe(Pageable pageable, LocalDate day, Long groupId);
 }

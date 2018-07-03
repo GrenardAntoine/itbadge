@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -129,5 +130,19 @@ public class GroupeResource {
         log.debug("REST request to delete Groupe : {}", id);
         groupeService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+
+    @GetMapping("/groupes/badgeageGroupe/{groupid}/{daystring}")
+    @Timed
+    public ResponseEntity<List<Groupe>> findBadgeageGroupe(Pageable pageable, @PathVariable String daystring, @PathVariable Long groupid) {
+
+        System.out.println("dayString:"+daystring);
+        System.out.println("groupId:"+groupid);
+        LocalDate day = LocalDate.parse(daystring);
+
+        Page<Groupe> page  = groupeService.findBadgeageGroupe(pageable, day, groupid);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/groupes/currentGroupe"));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

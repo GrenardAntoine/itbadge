@@ -22,6 +22,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -154,11 +156,12 @@ public class BadgeageResource {
 
     @PostMapping("/badgeages/addBadgageUser")
     @Timed
-    public ResponseEntity<Badgeage> createBadgeageUser(@Valid @RequestBody Badgeage badgeage) throws URISyntaxException {
-        log.debug("REST request to save Badgeage : {}", badgeage);
-        if (badgeage.getId() != null) {
-            throw new BadRequestAlertException("A new badgeage cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+    public ResponseEntity<Badgeage> createBadgeageUser() throws URISyntaxException {
+        log.debug("REST request to save Badgeage");
+
+        Badgeage badgeage = new Badgeage();
+        badgeage.setCurrentDate(LocalDate.now());
+        badgeage.setBadgeageEleve(Instant.now());
         badgeage.setUtilisateur(utilisateurService.getCurrentUtilisateur().get());
         Badgeage result = badgeageService.save(badgeage);
         return ResponseEntity.created(new URI("/api/badgeages/" + result.getId()))

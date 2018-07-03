@@ -133,6 +133,7 @@ public class UtilisateurResource {
     }
 
 
+    // NE FONCTIONNE PAS ! UTILISER /groupes/badgeageGroupe/{groupid}/{daystring}
     @GetMapping("/utilisateurs/currentCours")
     @Timed
     public ResponseEntity<List<Utilisateur>> findStudent(Pageable pageable) {

@@ -1,9 +1,12 @@
 package com.itescia.itbadge.service.impl;
 
 import com.itescia.itbadge.domain.Cours;
+import com.itescia.itbadge.domain.Utilisateur;
+import com.itescia.itbadge.service.CoursService;
 import com.itescia.itbadge.service.GroupeService;
 import com.itescia.itbadge.domain.Groupe;
 import com.itescia.itbadge.repository.GroupeRepository;
+import com.itescia.itbadge.service.UtilisateurService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,9 +31,13 @@ public class GroupeServiceImpl implements GroupeService {
     private final Logger log = LoggerFactory.getLogger(GroupeServiceImpl.class);
 
     private final GroupeRepository groupeRepository;
+    private final CoursService coursService;
 
-    public GroupeServiceImpl(GroupeRepository groupeRepository) {
+    public GroupeServiceImpl(GroupeRepository groupeRepository,
+                             CoursService coursService
+    ) {
         this.groupeRepository = groupeRepository;
+        this.coursService = coursService;
     }
 
     /**
@@ -92,5 +101,10 @@ public class GroupeServiceImpl implements GroupeService {
     @Override
     public Set<Groupe> findByCours(Cours cours) {
         return groupeRepository.findByListCoursContains(cours);
+    }
+
+    @Override
+    public Page<Groupe> findBadgeageGroupe(Pageable pageable, LocalDate day, Long groupId) {
+        return groupeRepository.findBadgeageGroupe(pageable, day, groupId);
     }
 }
