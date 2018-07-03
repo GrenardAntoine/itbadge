@@ -138,4 +138,12 @@ public class UtilisateurResource {
     public Optional<Utilisateur> test(Pageable pageable) {
         return utilisateurService.getCurrentUtilisateur();
     }
+
+
+    @GetMapping("/utilisateurs/currentCours")
+    @Timed
+    public List<Utilisateur> findStudent() {
+
+        return utilisateurService.findStudent();
+    }
 }

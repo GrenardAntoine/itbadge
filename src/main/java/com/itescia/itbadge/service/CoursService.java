@@ -43,4 +43,10 @@ public interface CoursService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    Optional<Cours> findOneByUtilisateurAndDateDebut();
+
+    Page<Cours> findByListProfesseurs(Pageable pageable);
+
+    Page<Cours> findByListProfesseursUnique(Pageable pageable);
 }

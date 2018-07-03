@@ -1,5 +1,8 @@
 package com.itescia.itbadge.service.impl;
 
+import com.itescia.itbadge.domain.Cours;
+import com.itescia.itbadge.domain.Groupe;
+import com.itescia.itbadge.repository.CoursRepository;
 import com.itescia.itbadge.security.SecurityUtils;
 import com.itescia.itbadge.service.UtilisateurService;
 import com.itescia.itbadge.domain.Utilisateur;
@@ -9,11 +12,15 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
+import java.util.function.Function;
+
 /**
  * Service Implementation for managing Utilisateur.
  */
@@ -24,8 +31,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     private final Logger log = LoggerFactory.getLogger(UtilisateurServiceImpl.class);
 
     private final UtilisateurRepository utilisateurRepository;
+    private final CoursRepository coursRepository;
 
-    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository) {
+    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, CoursRepository coursRepository) {
+        this.coursRepository = coursRepository;
         this.utilisateurRepository = utilisateurRepository;
     }
 
@@ -97,5 +106,31 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Optional<String> login = SecurityUtils.getCurrentUserLogin();
         return utilisateurRepository.findOneByUserLogin(login.get());
 
+    }
+
+    @Override
+    public List<Utilisateur> findStudent() {
+        List<Utilisateur> listEleve = new ArrayList<Utilisateur>();
+        Optional<Utilisateur> utilisateur = getCurrentUtilisateur();
+        Set<Utilisateur> listUtilisateur = new AbstractSet<Utilisateur>() {
+            @Override
+            public Iterator<Utilisateur> iterator() {
+                return null;
+            }
+
+            @Override
+            public int size() {
+                return 0;
+            }
+        };
+        listUtilisateur.add(utilisateur.get());
+        Instant currentDate = Instant.now();
+        Optional<Cours> currentCours = coursRepository.findOneByListProfesseursContainsAndDateDebut(utilisateur.get(),currentDate);
+
+        Iterator it = currentCours.get().getListGroupes().iterator();
+        while(it.hasNext())
+            listEleve.addAll(utilisateurRepository.findByGroupe((Groupe)it.next()));
+
+        return listEleve;
     }
 }

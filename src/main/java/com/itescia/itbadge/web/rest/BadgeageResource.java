@@ -2,7 +2,9 @@ package com.itescia.itbadge.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.itescia.itbadge.domain.Badgeage;
+import com.itescia.itbadge.domain.Utilisateur;
 import com.itescia.itbadge.service.BadgeageService;
+import com.itescia.itbadge.service.UtilisateurService;
 import com.itescia.itbadge.web.rest.errors.BadRequestAlertException;
 import com.itescia.itbadge.web.rest.util.HeaderUtil;
 import com.itescia.itbadge.web.rest.util.PaginationUtil;
@@ -20,6 +22,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +38,11 @@ public class BadgeageResource {
     private static final String ENTITY_NAME = "badgeage";
 
     private final BadgeageService badgeageService;
+    private final UtilisateurService utilisateurService;
 
-    public BadgeageResource(BadgeageService badgeageService) {
+    public BadgeageResource(BadgeageService badgeageService, UtilisateurService utilisateurService) {
         this.badgeageService = badgeageService;
+        this.utilisateurService = utilisateurService;
     }
 
     /**
@@ -136,4 +141,42 @@ public class BadgeageResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/badgeages/currentDate")
+    @Timed
+    public ResponseEntity<List<Badgeage>> getAllBadgeagesByCurrentUtilisateurDate(Pageable pageable) {
+        log.debug("REST request to get a page of Badgeages by current utilisateur");
+        Page<Badgeage> page = badgeageService.findByUtilisateurAndCurrentDate(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/badgeages/current");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/badgeages/allByCurrentCours")
+    @Timed
+    public ResponseEntity<List<Badgeage>> getAllBadgeagesByCurrentGroupeDate() {
+        log.debug("REST request to get a page of Badgeages by current utilisateur");
+        List<Utilisateur> listStudent = new ArrayList<>();
+        listStudent = utilisateurService.findStudent();
+        List<Badgeage> listBadgeage = new ArrayList<Badgeage>();
+        for(int i=0; i<listStudent.size(); i++) {
+            listBadgeage.add(badgeageService.findByUtilisateur(listStudent.get(i)).get());
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(null, "/api/badgeages");
+
+        return new ResponseEntity<>(listBadgeage,headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/badgeages/addBadgageUser")
+    @Timed
+    public ResponseEntity<Badgeage> createBadgeageUser(@Valid @RequestBody Badgeage badgeage) throws URISyntaxException {
+        log.debug("REST request to save Badgeage : {}", badgeage);
+        if (badgeage.getId() != null) {
+            throw new BadRequestAlertException("A new badgeage cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        badgeage.setUtilisateur(utilisateurService.getCurrentUtilisateur().get());
+        Badgeage result = badgeageService.save(badgeage);
+        return ResponseEntity.created(new URI("/api/badgeages/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
 }

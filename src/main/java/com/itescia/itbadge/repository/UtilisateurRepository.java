@@ -1,5 +1,6 @@
 package com.itescia.itbadge.repository;
 
+import com.itescia.itbadge.domain.Groupe;
 import com.itescia.itbadge.domain.Utilisateur;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,4 +30,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
 
     @Query("select utilisateur from Utilisateur utilisateur where utilisateur.user.login =:login")
     Optional<Utilisateur> findOneByUserLogin(@Param("login") String login);
+
+    List<Utilisateur> findByGroupe(Groupe groupe);
 }

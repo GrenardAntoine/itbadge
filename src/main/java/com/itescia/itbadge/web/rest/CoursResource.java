@@ -124,4 +124,32 @@ public class CoursResource {
         coursService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    @GetMapping("/cours/current")
+    @Timed
+    public ResponseEntity<Cours> getCurrentCoursUtilisateur() {
+        log.debug("REST request to get Cours : {}");
+        Optional<Cours> cours = coursService.findOneByUtilisateurAndDateDebut();
+        return ResponseUtil.wrapOrNotFound(cours);
+    }
+
+    @GetMapping("/cours/allProfesseur")
+    @Timed
+    public ResponseEntity<List<Cours>> getAllCoursProfesseur(Pageable pageable) {
+        log.debug("REST request to get a page of Cours");
+        Page<Cours> page = coursService.findByListProfesseurs(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/cours");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/cours/allProfesseurUnique")
+    @Timed
+    public ResponseEntity<List<Cours>> getAllCoursProfesseurUnique(Pageable pageable) {
+        log.debug("REST request to get a page of Cours");
+        Page<Cours> page = coursService.findByListProfesseursUnique(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/cours");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 }

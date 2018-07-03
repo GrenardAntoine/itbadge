@@ -7,6 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 
 /**
  * Spring Data  repository for the Badgeage entity.
@@ -16,4 +20,9 @@ import org.springframework.stereotype.Repository;
 public interface BadgeageRepository extends JpaRepository<Badgeage, Long> {
 
     Page<Badgeage> findByUtilisateur(Utilisateur utilisateur, Pageable pageable);
+
+    Page<Badgeage> findByUtilisateurAndCurrentDate(Utilisateur utilisateur, LocalDate currentDate, Pageable pageable);
+
+
+    Optional<Badgeage> findByUtilisateur(Utilisateur utilisateur);
 }

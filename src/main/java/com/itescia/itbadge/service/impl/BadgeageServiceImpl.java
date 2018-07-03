@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 /**
  * Service Implementation for managing Badgeage.
@@ -88,4 +90,15 @@ public class BadgeageServiceImpl implements BadgeageService {
     }
 
 
+    @Override
+    public Page<Badgeage> findByUtilisateurAndCurrentDate(Pageable pageable) {
+        Optional<Utilisateur> utilisateur = utilisateurService.getCurrentUtilisateur();
+        LocalDate currentDate = LocalDate.now();
+        return badgeageRepository.findByUtilisateurAndCurrentDate(utilisateur.get(), currentDate, pageable);
+    }
+
+    @Override
+    public Optional<Badgeage> findByUtilisateur(Utilisateur utilisateur) {
+        return badgeageRepository.findByUtilisateur(utilisateur);
+    }
 }

@@ -5,6 +5,7 @@ import com.itescia.itbadge.domain.Utilisateur;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -51,5 +52,7 @@ public interface UtilisateurService {
     void delete(Long id);
 
 
-    public Optional<Utilisateur> getCurrentUtilisateur();
+    Optional<Utilisateur> getCurrentUtilisateur();
+
+    List<Utilisateur> findStudent();
 }

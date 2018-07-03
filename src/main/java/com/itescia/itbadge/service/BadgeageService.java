@@ -2,9 +2,11 @@ package com.itescia.itbadge.service;
 
 import com.itescia.itbadge.domain.Badgeage;
 
+import com.itescia.itbadge.domain.Utilisateur;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,4 +48,9 @@ public interface BadgeageService {
 
 
     Page<Badgeage> findByUtilisateur(Pageable pageable);
+
+
+    Page<Badgeage> findByUtilisateurAndCurrentDate(Pageable pageable);
+
+    Optional<Badgeage> findByUtilisateur(Utilisateur utilisateur);
 }
