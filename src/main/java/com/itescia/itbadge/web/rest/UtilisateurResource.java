@@ -135,8 +135,9 @@ public class UtilisateurResource {
 
     @GetMapping("/utilisateurs/currentCours")
     @Timed
-    public List<Utilisateur> findStudent() {
-
-        return utilisateurService.findStudent();
+    public ResponseEntity<List<Utilisateur>> findStudent(Pageable pageable) {
+        Page<Utilisateur> page = utilisateurService.findStudentAndBadgeage(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/utilisateurs/currentCours"));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

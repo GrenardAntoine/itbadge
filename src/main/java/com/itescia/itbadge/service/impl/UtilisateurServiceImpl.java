@@ -3,6 +3,7 @@ package com.itescia.itbadge.service.impl;
 import com.itescia.itbadge.domain.Cours;
 import com.itescia.itbadge.domain.Groupe;
 import com.itescia.itbadge.repository.CoursRepository;
+import com.itescia.itbadge.repository.GroupeRepository;
 import com.itescia.itbadge.security.SecurityUtils;
 import com.itescia.itbadge.service.UtilisateurService;
 import com.itescia.itbadge.domain.Utilisateur;
@@ -32,10 +33,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;
     private final CoursRepository coursRepository;
+    private final GroupeRepository groupeRepository;
 
-    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, CoursRepository coursRepository) {
+    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, CoursRepository coursRepository, GroupeRepository groupeRepository) {
         this.coursRepository = coursRepository;
         this.utilisateurRepository = utilisateurRepository;
+        this.groupeRepository = groupeRepository;
     }
 
     /**
@@ -109,16 +112,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public List<Utilisateur> findStudent() {
-        List<Utilisateur> listEleve = new ArrayList<Utilisateur>();
+    public Page<Utilisateur> findStudentAndBadgeage(Pageable pageable) {
         Optional<Utilisateur> utilisateur = getCurrentUtilisateur();
         Instant currentDate = Instant.now();
         Optional<Cours> currentCours = coursRepository.findOneByListProfesseursContainsAndDateDebutBeforeAndDateFinAfter(utilisateur.get(),currentDate,currentDate);
+        currentCours.get().setListGroupes(groupeRepository.findByListCoursContains(currentCours.get()));
 
-        Iterator it = currentCours.get().getListGroupes().iterator();
-        while(it.hasNext())
-            listEleve.addAll(utilisateurRepository.findByGroupeContains((Groupe)it.next()));
+        return utilisateurRepository.findByCours(currentCours.get(),currentCours.get().getListGroupes(),pageable);
 
-        return listEleve;
     }
 }

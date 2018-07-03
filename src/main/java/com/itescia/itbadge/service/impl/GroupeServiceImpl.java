@@ -1,5 +1,6 @@
 package com.itescia.itbadge.service.impl;
 
+import com.itescia.itbadge.domain.Cours;
 import com.itescia.itbadge.service.GroupeService;
 import com.itescia.itbadge.domain.Groupe;
 import com.itescia.itbadge.repository.GroupeRepository;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Optional;
+import java.util.Set;
+
 /**
  * Service Implementation for managing Groupe.
  */
@@ -60,7 +63,7 @@ public class GroupeServiceImpl implements GroupeService {
     public Page<Groupe> findAllWithEagerRelationships(Pageable pageable) {
         return groupeRepository.findAllWithEagerRelationships(pageable);
     }
-    
+
 
     /**
      * Get one groupe by id.
@@ -84,5 +87,10 @@ public class GroupeServiceImpl implements GroupeService {
     public void delete(Long id) {
         log.debug("Request to delete Groupe : {}", id);
         groupeRepository.deleteById(id);
+    }
+
+    @Override
+    public Set<Groupe> findByCours(Cours cours) {
+        return groupeRepository.findByListCoursContains(cours);
     }
 }

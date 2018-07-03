@@ -1,5 +1,6 @@
 package com.itescia.itbadge.repository;
 
+import com.itescia.itbadge.domain.Cours;
 import com.itescia.itbadge.domain.Groupe;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Spring Data  repository for the Groupe entity.
@@ -27,4 +29,5 @@ public interface GroupeRepository extends JpaRepository<Groupe, Long> {
     @Query("select groupe from Groupe groupe left join fetch groupe.listCours where groupe.id =:id")
     Optional<Groupe> findOneWithEagerRelationships(@Param("id") Long id);
 
+    Set<Groupe> findByListCoursContains(Cours cours);
 }

@@ -54,5 +54,5 @@ public interface UtilisateurService {
 
     Optional<Utilisateur> getCurrentUtilisateur();
 
-    List<Utilisateur> findStudent();
+    Page<Utilisateur> findStudentAndBadgeage(Pageable pageable);
 }
