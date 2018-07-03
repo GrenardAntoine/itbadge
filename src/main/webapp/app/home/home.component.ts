@@ -5,10 +5,12 @@ import * as moment from 'moment';
 import { Principal, Account } from 'app/core';
 import { Router } from '@angular/router';
 
-import { Cours } from '../shared/model/cours.model';
+import { Cours, ICours } from '../shared/model/cours.model';
 import { Utilisateur } from '../shared/model/utilisateur.model';
 import { Badgeage } from '../shared/model/badgeage.model';
 import { HomeService } from './home.service';
+import { CoursService } from '../entities/cours/cours.service';
+import { BadgeageService } from '../entities/badgeage/badgeage.service';
 
 @Component({
     selector: 'jhi-home',
@@ -18,14 +20,15 @@ import { HomeService } from './home.service';
 export class HomeComponent implements OnInit {
     account: Account = null;
     listEleveBadgeage: Utilisateur[] = [];
-    cours: Cours = null;
+    cours: ICours = null;
     listBadgeage: Badgeage[] = [];
 
     constructor(
         private principal: Principal,
         private eventManager: JhiEventManager,
         private router: Router,
-        private homeService: HomeService
+        private coursService: CoursService,
+        private badgeageService: BadgeageService
     ) {}
 
     ngOnInit() {
@@ -38,24 +41,14 @@ export class HomeComponent implements OnInit {
                 //     this.listEleveBadgeage = res;
                 // });
             } else if (this.account.authorities.includes('ROLE_USER')) {
-                // this.homeService.getCurrentCours().subscribe((res) => {
-                //     this.cours = res;
-                // });
-                this.cours = new Cours();
-                this.cours.nom = 'Java';
-                // this.homeService.getListBadgeage().subscribe((res) => {
-                //     this.listBadgeage = res;
-                // });
-                const badgeage1 = new Badgeage();
-                badgeage1.badgeageEleve = moment('2018-06-26T09:00:00.000Z');
-                badgeage1.badgeageCorrige = moment('2018-06-26T09:00:00.000Z');
+                this.coursService.getCurrentCours().subscribe(res => {
+                    this.cours = res.body;
+                });
 
-                const badgeage2 = new Badgeage();
-                badgeage2.badgeageEleve = moment('2018-06-26T09:00:00.000Z');
-                badgeage2.badgeageCorrige = moment('2018-06-26T09:00:00.000Z');
-
-                this.listBadgeage.push(badgeage1);
-                this.listBadgeage.push(badgeage2);
+                this.badgeageService.getListTodayBadgeageForStudent().subscribe(res => {
+                    this.listBadgeage = res.body;
+                    console.log(this.listBadgeage);
+                });
             }
         });
         this.registerAuthenticationSuccess();
@@ -85,5 +78,14 @@ export class HomeComponent implements OnInit {
 
     login() {
         this.router.navigate(['login']);
+    }
+
+    badger() {
+        this.badgeageService.badger().subscribe(res => {
+            this.badgeageService.getListTodayBadgeageForStudent().subscribe(res => {
+                this.listBadgeage = res.body;
+                console.log(this.listBadgeage);
+            });
+        });
     }
 }

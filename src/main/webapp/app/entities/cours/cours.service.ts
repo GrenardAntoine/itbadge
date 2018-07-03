@@ -69,4 +69,10 @@ export class CoursService {
         });
         return res;
     }
+
+    getCurrentCours(): Observable<EntityResponseType> {
+        return this.http
+            .get<ICours>(`${this.resourceUrl}/current`, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertDateFromServer(res));
+    }
 }

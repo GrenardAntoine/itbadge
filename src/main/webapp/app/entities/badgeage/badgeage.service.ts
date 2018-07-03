@@ -73,4 +73,17 @@ export class BadgeageService {
         });
         return res;
     }
+
+    getListTodayBadgeageForStudent(): Observable<EntityArrayResponseType> {
+        return this.http
+            .get<IBadgeage[]>(this.resourceUrl + '/currentDate', { observe: 'response' })
+            .map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res));
+    }
+
+    badger(badgeage: IBadgeage): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(badgeage);
+        return this.http
+            .post<IBadgeage>(this.resourceUrl + '/addBadgageUser', copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertDateFromServer(res));
+    }
 }
