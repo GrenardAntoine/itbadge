@@ -42,7 +42,17 @@
         </createTable>
         <dropDefaultValue tableName="badgeage" columnName="badgeage_eleve" columnDataType="datetime"/>
         <dropDefaultValue tableName="badgeage" columnName="badgeage_corrige" columnDataType="datetime"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+
+    <changeSet author="AntoineGrenard" id="1">
+        <ext:loadData identityInsertEnabled="true" commentLineStartsWith="#"
+                      encoding="UTF-8"
+                      file="config/liquibase/changelog/data/badgeage.csv"
+                      quotchar="&#34;"
+                      separator=";"
+                      tableName="badgeage">
+        </ext:loadData>
+    </changeSet>
 </databaseChangeLog>

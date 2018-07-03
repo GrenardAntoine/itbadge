@@ -63,4 +63,14 @@
         </ext:loadData>
     </changeSet>
 
+    <changeSet author="AntoineGrenard" id="2">
+        <ext:loadData identityInsertEnabled="true" commentLineStartsWith="#"
+                      encoding="UTF-8"
+                      file="config/liquibase/changelog/data/utilisateur_list_cours.csv"
+                      quotchar="&#34;"
+                      separator=";"
+                      tableName="utilisateur_list_cours">
+        </ext:loadData>
+    </changeSet>
+
 </databaseChangeLog>

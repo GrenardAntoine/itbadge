@@ -1,4 +1,4 @@
 id;nom;date_debut;date_fin
-0;Java;NOW();NOW()
+0;Java;2018-07-03 09:00:00;2018-07-04 23:30:00
 1;Scrum;NOW();NOW()
 2;Reseau;NOW();NOW()
