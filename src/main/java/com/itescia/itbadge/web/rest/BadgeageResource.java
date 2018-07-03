@@ -151,20 +151,6 @@ public class BadgeageResource {
     }
 
 
-    @GetMapping("/badgeages/allByCurrentCours")
-    @Timed
-    public ResponseEntity<List<Badgeage>> getAllBadgeagesByCurrentGroupeDate() {
-        log.debug("REST request to get a page of Badgeages by current utilisateur");
-        List<Utilisateur> listStudent = new ArrayList<>();
-        listStudent = utilisateurService.findStudent();
-        List<Badgeage> listBadgeage = new ArrayList<Badgeage>();
-        for(int i=0; i<listStudent.size(); i++) {
-            listBadgeage.add(badgeageService.findByUtilisateur(listStudent.get(i)).get());
-        }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(null, "/api/badgeages");
-
-        return new ResponseEntity<>(listBadgeage,headers, HttpStatus.OK);
-    }
 
     @PostMapping("/badgeages/addBadgageUser")
     @Timed

@@ -1,11 +1,13 @@
 package com.itescia.itbadge.service;
 
+import com.itescia.itbadge.domain.Cours;
 import com.itescia.itbadge.domain.Groupe;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service Interface for managing Groupe.
@@ -34,7 +36,7 @@ public interface GroupeService {
      * @return the list of entities
      */
     Page<Groupe> findAllWithEagerRelationships(Pageable pageable);
-    
+
     /**
      * Get the "id" groupe.
      *
@@ -49,4 +51,6 @@ public interface GroupeService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    Set<Groupe> findByCours(Cours cours);
 }

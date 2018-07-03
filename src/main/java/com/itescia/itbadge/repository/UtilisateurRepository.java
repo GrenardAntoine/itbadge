@@ -1,5 +1,6 @@
 package com.itescia.itbadge.repository;
 
+import com.itescia.itbadge.domain.Cours;
 import com.itescia.itbadge.domain.Groupe;
 import com.itescia.itbadge.domain.Utilisateur;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Spring Data  repository for the Utilisateur entity.
@@ -31,5 +33,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     @Query("select utilisateur from Utilisateur utilisateur where utilisateur.user.login =:login")
     Optional<Utilisateur> findOneByUserLogin(@Param("login") String login);
 
-    List<Utilisateur> findByGroupeContains(Groupe groupe);
+    @Query("select distinct utilisateur, badgeage from Utilisateur utilisateur inner join Groupe groupe on groupe = utilisateur.groupe left join Badgeage badgeage on badgeage.utilisateur = utilisateur  inner join Cours cours on cours =:cours and (groupe in (:groupe)) ")
+    Page<Utilisateur> findByCours(@Param("cours")Cours cours, @Param("groupe")Set<Groupe> listGroupe, Pageable pageable);
 }
