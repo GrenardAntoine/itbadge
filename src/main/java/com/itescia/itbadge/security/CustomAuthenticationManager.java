@@ -1,10 +1,14 @@
 package com.itescia.itbadge.security;
 
+import java.awt.List;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +30,22 @@ import org.springframework.stereotype.Component;
 import com.itescia.itbadge.domain.Authority;
 import com.itescia.itbadge.domain.User;
 import com.itescia.itbadge.repository.UserRepository;
+import com.itescia.itbadge.service.MailService;
+import com.itescia.itbadge.service.UserService;
+import com.itescia.itbadge.service.dto.UserDTO;
+import com.itescia.itbadge.web.rest.UserResource;
 
 
 @Component
 @Primary
 public class CustomAuthenticationManager implements AuthenticationManager {
+	
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private UserService userService;
 
     LdapAuthenticationProvider provider = null;
 
@@ -65,9 +80,36 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         provider.setUserDetailsContextMapper(new UserDetailsContextMapper() {
             @Override
             public UserDetails mapUserFromContext(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> clctn) {
-                Optional<User> isUser = userRepository.findOneWithAuthoritiesByLogin(username);
+                //Optional<User> isUser = userRepository.findOneWithAuthoritiesByLogin(username);
+            	Optional<User> isUser = userRepository.findOneByLogin(username);             
+                
+                if (!isUser.isPresent())
+                {
+                	try {
+                		UserDTO uDTO = new UserDTO();
+                		uDTO.setLogin(authentication.getName());
+                		uDTO.setActivated(true);
+                		uDTO.setFirstName(authentication.getName());
+                		uDTO.setLastName(authentication.getName());
+                		uDTO.setEmail(authentication.getName()+"@edu.itescia.fr");
+                		Set<String> gA = new HashSet<String>();
+                		gA.add("ROLE_USER");
+                		uDTO.setAuthorities(gA);
+                		
+                		System.err.println(uDTO.getEmail());
+                		System.err.println(uDTO.getFirstName());
+						new UserResource(userService, userRepository, mailService).createUser(uDTO);
+						isUser = userRepository.findOneByLogin(username);
+					} catch (URISyntaxException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                	
+                }
+                
                 final User user = isUser.get();
                 Set<Authority> userAuthorities = user.getAuthorities();
+                System.err.println(userAuthorities.toString());
                 Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
                 for(Authority a: userAuthorities){
                     GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
