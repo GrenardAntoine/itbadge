@@ -2,14 +2,14 @@
     <h1>Cours</h1>
 
     <div class="row">
-        <div class="col-3">
+        <div class="col">
             Cours : <br>
             <select class="form-control" (change)="changeCoursName($event.target.value)">
                 <option></option>
                 <option *ngFor="let cours of listCours" [value]="cours.nom">{{cours.nom}}</option>
             </select>
         </div>
-        <div class="col-3">
+        <div class="col">
             Horaire : <br>
             <select class="form-control" (change)="changeCoursDate($event.target.value)">
                 <option></option>
@@ -27,53 +27,103 @@
                         <td>{{listCours[0].nom}}</td>
                     </tr>
                     <tr>
-                        <td>Description<br>
-                            <a>Modifier</a></td>
+                        <td>
+                            Description<br>
+                            <!-- #### Modification de la description desactive ####
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDescription">
+                                Modifier
+                            </button>
+                            --></td>
                         <td>{{cours.description.contenu}}</td>
                     </tr>
                 </table>
             </div>
         </div>
 
+        <!-- #### Modification de la description desactive ####
+        <div class="modal fade" id="modalDescription" tabindex="-1" role="dialog" aria-labelledby="modalDescriptionLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modifier la description</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea class="form-control">
+                            {{ cours.description.contenu }}
+                        </textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-primary">Sauvegarder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
         <div class="row">
-            <div class="col-8">
+            <div class="col">
                 <table class="table table-bordered">
                     <tr>
-                        <td>Nombre d'élève présent le matin :</td>
-                        <td><input type="text" name="presMatin" class="form-control"></td>
+                        <td>Nombre badge d'élève le matin :</td>
+                        <td>{{ nbBadgeageMatin }}</td>
+                        <td rowspan="2"><button class="btn btn-primary form-control">Faire l'appel</button></td>
                     </tr>
                     <tr>
-                        <td>Nombre d'élève présent le matin :</td>
-                        <td><input type="text" name="presAprem" class="form-control"></td>
+                        <td>Nombre badge d'élève l'après midi :</td>
+                        <td>{{ nbBadgeageAprem }}</td>
                     </tr>
                 </table>
-            </div>
-            <div class="col-4">
-                <button class="form-control">Valider</button><br>
-                <button class="form-control">Faire l'appel</button>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-12">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Elève</th>
-                        <th>Horaire élève</th>
-                        <th>Horaire pris en compte</th>
-                        <th>Horaire élève</th>
-                        <th>Horaire pris en compte</th>
-                    </tr>
-                    <tr *ngFor="let eleve of listCurrentEleve">
-                        <td>{{eleve.user.firstName}} {{eleve.user.lastName}}</td>
-                        <td><input type="text" [value]="eleve.listBageages[0]?.badgeageEleve.format('HH:mm')"></td>
-                        <td><input type="text" [value]="eleve.listBageages[0]?.badgeageCorrige?.format('HH:mm')"></td>
-                        <td><input type="text" [value]="eleve.listBageages[1]?.badgeageEleve.format('HH:mm')"></td>
-                        <td><input type="text" [value]="eleve.listBageages[1]?.badgeageCorrige?.format('HH:mm')"></td>
-                    </tr>
-                </table>
+        <form name="editForm" role="form"  (ngSubmit)="save()">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Elève</th>
+                            <th>Horaire élève</th>
+                            <th>Horaire pris en compte</th>
+                            <th>Horaire élève</th>
+                            <th>Horaire pris en compte</th>
+                        </tr>
+                        <tr *ngFor="let eleve of listCurrentEleve">
+                            <td>{{eleve.user.firstName}} {{eleve.user.lastName}}</td>
+
+                            <td>{{ eleve.listBageages[0]?.badgeageEleve.format('HH:mm') }}</td>
+
+                            <td>
+                                <input type="text" name="{{eleve.id}}-0"
+                                       [ngModel]="eleve.listBageages[0].badgeageCorrige | date: 'HH:mm'"
+                                       (ngModelChange)="changeHourMinute(eleve.listBageages[0].badgeageCorrige, $event)">
+                            </td>
+
+                            <td>{{ eleve.listBageages[1]?.badgeageEleve.format('HH:mm')}}</td>
+
+                            <td>
+                                <input type="text" name="{{eleve.id}}-1"
+                                       [ngModel]="eleve.listBageages[1].badgeageCorrige | date: 'HH:mm'"
+                                       (ngModelChange)="changeHourMinute(eleve.listBageages[1].badgeageCorrige, $event)">
+                            </td>
+
+                            <!--
+                            <td>{{ eleve.listBageages[0]?.badgeageEleve.format('HH:mm') }}</td>
+                            <td><input type="text" [(ngModel)]="eleve.listBageages[0]?.badgeageCorrige?.format('HH:mm')"></td>
+                            <td>{{ eleve.listBageages[1]?.badgeageEleve.format('HH:mm')}}</td>
+                            <td><input type="text" [(ngModel)]="eleve.listBageages[1]?.badgeageCorrige?.format('HH:mm')"></td>
+                            -->
+                        </tr>
+                    </table>
+                </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary form-control">Valider</button>
+                </div>
+            </div>
+        </form>
     </div>
-
 </div>
