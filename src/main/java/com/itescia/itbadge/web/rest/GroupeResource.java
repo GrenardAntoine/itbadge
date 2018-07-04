@@ -135,14 +135,10 @@ public class GroupeResource {
 
     @GetMapping("/groupes/badgeageGroupe/{groupid}/{daystring}")
     @Timed
-    public ResponseEntity<List<Groupe>> findBadgeageGroupe(Pageable pageable, @PathVariable String daystring, @PathVariable Long groupid) {
+    public ResponseEntity<Groupe> findBadgeageGroupe(@PathVariable String daystring, @PathVariable Long groupid) {
 
-        System.out.println("dayString:"+daystring);
-        System.out.println("groupId:"+groupid);
         LocalDate day = LocalDate.parse(daystring);
 
-        Page<Groupe> page  = groupeService.findBadgeageGroupe(pageable, day, groupid);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/groupes/currentGroupe"));
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseUtil.wrapOrNotFound(groupeService.findBadgeageGroupe(day, groupid));
     }
 }

@@ -55,5 +55,5 @@ public interface GroupeService {
 
     Set<Groupe> findByCours(Cours cours);
 
-    Page<Groupe> findBadgeageGroupe(Pageable pageable, LocalDate day, Long groupId);
+    Optional<Groupe> findBadgeageGroupe(LocalDate day, Long groupId);
 }

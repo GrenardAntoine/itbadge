@@ -104,7 +104,7 @@ public class GroupeServiceImpl implements GroupeService {
     }
 
     @Override
-    public Page<Groupe> findBadgeageGroupe(Pageable pageable, LocalDate day, Long groupId) {
-        return groupeRepository.findBadgeageGroupe(pageable, day, groupId);
+    public Optional<Groupe> findBadgeageGroupe(LocalDate day, Long groupId) {
+        return groupeRepository.findBadgeageGroupe(day, groupId);
     }
 }

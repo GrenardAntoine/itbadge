@@ -35,5 +35,5 @@ public interface GroupeRepository extends JpaRepository<Groupe, Long> {
     @Query(value ="select groupe from Groupe groupe left join fetch groupe.listEleves as eleve left join fetch eleve.listBageages badgeage " +
         "where badgeage.currentDate =:day and groupe.id =:groupeid",
         countQuery = "select count(distinct groupe) from Groupe groupe")
-    Page<Groupe> findBadgeageGroupe(Pageable pageable, @Param("day") LocalDate day, @Param("groupeid") Long groupeId);
+    Optional<Groupe> findBadgeageGroupe(@Param("day") LocalDate day, @Param("groupeid") Long groupeId);
 }
