@@ -4,68 +4,76 @@
     <div class="row">
         <div class="col-3">
             Cours : <br>
-            <select [(ngModel)]="listCours" class="form-control">
-                <option *ngFor="let cours of listCours" [ngValue]="cours.id">{{cours.nom}}</option>
+            <select class="form-control" (change)="changeCoursName($event.target.value)">
+                <option></option>
+                <option *ngFor="let cours of listCours" [value]="cours.nom">{{cours.nom}}</option>
             </select>
         </div>
         <div class="col-3">
             Horaire : <br>
-            <select [(ngModel)]="listCours" class="form-control">
-                <option *ngFor="let cours of listCours" [ngValue]="cours.id">{{cours.dateDebut}}</option>
+            <select class="form-control" (change)="changeCoursDate($event.target.value)">
+                <option></option>
+                <option *ngFor="let cours of listCours" [value]="cours.id">{{cours.nom}} {{cours.dateDebut}}</option>
             </select>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-3">
-            Nom : {{listCours[0].nom}} <br>
+    <div *ngIf="cours != null">
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Nom :</td>
+                        <td>{{listCours[0].nom}}</td>
+                    </tr>
+                    <tr>
+                        <td>Description<br>
+                            <a>Modifier</a></td>
+                        <td>{{cours.description.contenu}}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            Description : <br>
-            <a>Modifier</a>
+
+        <div class="row">
+            <div class="col-8">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Nombre d'élève présent le matin :</td>
+                        <td><input type="text" name="presMatin" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>Nombre d'élève présent le matin :</td>
+                        <td><input type="text" name="presAprem" class="form-control"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-4">
+                <button class="form-control">Valider</button><br>
+                <button class="form-control">Faire l'appel</button>
+            </div>
         </div>
-        <div class="col-10">
-            <br>
-            {{listCours[0].description.contenu}}
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Elève</th>
+                        <th>Horaire élève</th>
+                        <th>Horaire pris en compte</th>
+                        <th>Horaire élève</th>
+                        <th>Horaire pris en compte</th>
+                    </tr>
+                    <tr *ngFor="let eleve of listCurrentEleve">
+                        <td>{{eleve.user.firstName}} {{eleve.user.lastName}}</td>
+                        <td><input type="text" [value]="eleve.listBageages[0]?.badgeageEleve.format('HH:mm')"></td>
+                        <td><input type="text" [value]="eleve.listBageages[0]?.badgeageCorrige?.format('HH:mm')"></td>
+                        <td><input type="text" [value]="eleve.listBageages[1]?.badgeageEleve.format('HH:mm')"></td>
+                        <td><input type="text" [value]="eleve.listBageages[1]?.badgeageCorrige?.format('HH:mm')"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-4">
-            Nombre délève présent le matin : <br>
-        </div>
-        <div class="col-3">
-            <input typ="text" name="presMatin" class="form-control"><br>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            Nombre délève présent le matin : <br>
-        </div>
-        <div class="col-3">
-            <input typ="text" name="presAprem" class="form-control">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <table class="table table-bordered">
-                <tr>
-                    <th></th>
-                    <th>Horaire élève</th>
-                    <th>Horaire pris en compte</th>
-                    <th>Horaire élève</th>
-                    <th>Horaire pris en compte</th>
-                </tr>
-                <tr *ngFor="let eleve of listEleve">
-                    <td>{{eleve.nom}} {{eleve.prenom}}</td>
-                    <td>{{eleve.listBadgeage[0].badgeageEleve}}</td>
-                    <td>{{eleve.listBadgeage[0].badgeageCorrige}}</td>
-                    <td>{{eleve.listBadgeage[1].badgeageEleve}}</td>
-                    <td>{{eleve.listBadgeage[1].badgeageCorrige}}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
 </div>

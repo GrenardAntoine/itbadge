@@ -8,6 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpResponse } from '@angular/common/http';
 import { IDescription } from '../shared/model/description.model';
 import { IUtilisateur } from '../shared/model/utilisateur.model';
+import { GroupeService } from '../entities/groupe/groupe.service';
 
 @Component({
     selector: 'jhi-cours',
@@ -21,18 +22,39 @@ export class CoursComponent implements OnInit {
 
     cours: ICours = null;
     description: IDescription = null;
-    listEleve: IUtilisateur = null;
+    listCurrentEleve: IUtilisateur[] = [];
 
     constructor(
         private principal: Principal,
         private eventManager: JhiEventManager,
         private router: Router,
-        private coursService: CoursService
+        private coursService: CoursService,
+        private groupeService: GroupeService
     ) {}
 
     ngOnInit() {
         this.coursService
             .query()
             .subscribe((res: HttpResponse<ICours[]>) => (this.listCours = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    }
+
+    // TODO : Implement when PAF has done listCoursName
+    changeCoursName(nom) {}
+
+    // TODO : Implement when PAF has done listCoursName
+    changeCoursDate(id) {
+        this.cours = null;
+        this.listCurrentEleve = [];
+
+        this.coursService.find(id).subscribe(res => {
+            this.cours = res.body;
+            let dateCours = this.cours.dateDebut.format('YYYY-MM-DD');
+
+            this.cours.listGroupes.forEach(groupe => {
+                this.groupeService.findBadgeageGroupe(groupe.id, dateCours).subscribe(res => {
+                    this.listCurrentEleve = this.listCurrentEleve.concat(res.body.listEleves);
+                });
+            });
+        });
     }
 }

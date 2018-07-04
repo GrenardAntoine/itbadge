@@ -22,8 +22,8 @@ import moment = require('moment');
 })
 export class HomeComponent implements OnInit {
     account: Account = null;
-    listCurrentEleve: IUtilisateur[] = [];
     cours: ICours = null;
+    listCurrentEleve: IUtilisateur[] = [];
     listBadgeage: IBadgeage[] = [];
 
     constructor(
