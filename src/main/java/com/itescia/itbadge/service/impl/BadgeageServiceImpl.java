@@ -5,6 +5,7 @@ import com.itescia.itbadge.service.BadgeageService;
 import com.itescia.itbadge.domain.Badgeage;
 import com.itescia.itbadge.repository.BadgeageRepository;
 import com.itescia.itbadge.service.UtilisateurService;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 /**
@@ -100,5 +104,49 @@ public class BadgeageServiceImpl implements BadgeageService {
     @Override
     public Optional<Badgeage> findByUtilisateur(Utilisateur utilisateur) {
         return badgeageRepository.findByUtilisateur(utilisateur);
+    }
+
+    @Override
+    public Optional<Badgeage> findIfBadgeageExist() {
+        Optional<Badgeage> badgeage = null;
+        Optional<Utilisateur> utilisateur = utilisateurService.getCurrentUtilisateur();
+        Instant currentDate = Instant.now();
+        LocalDateTime matin = LocalDateTime.now();
+        if(matin.getHour() <= 12 || (matin.getHour() == 12 && matin.getMinute() < 30))
+        {
+            while(matin.getHour() == 12)
+            {
+                matin.plusHours(1);
+            }
+            while(matin.getMinute() == 30)
+            {
+                if(matin.getMinute() < 30)
+                    matin.plusMinutes(1);
+                else
+                    matin.minusMinutes(1);
+
+            }
+            badgeageRepository.findIfBadgeageExist(utilisateur.get(),matin.toInstant(ZoneOffset.UTC));
+        }
+
+        LocalDateTime midi = LocalDateTime.now();
+        if(midi.getHour() <= 23 || (midi.getHour() == 23 && matin.getMinute() < 30))
+        {
+            while(midi.getHour() == 23)
+            {
+                midi.plusHours(1);
+            }
+            while(midi.getMinute() == 30)
+            {
+                if(midi.getMinute() < 30)
+                    midi.plusMinutes(1);
+                else
+                    midi.minusMinutes(1);
+
+            }
+            badgeageRepository.findIfBadgeageExist(utilisateur.get(),midi.toInstant(ZoneOffset.UTC));
+        }
+
+        return badgeage;
     }
 }

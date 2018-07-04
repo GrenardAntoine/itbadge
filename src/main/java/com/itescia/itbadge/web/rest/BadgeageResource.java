@@ -163,7 +163,10 @@ public class BadgeageResource {
         badgeage.setCurrentDate(LocalDate.now());
         badgeage.setBadgeageEleve(Instant.now());
         badgeage.setUtilisateur(utilisateurService.getCurrentUtilisateur().get());
-        Badgeage result = badgeageService.save(badgeage);
+        Optional<Badgeage> test = badgeageService.findIfBadgeageExist();
+        Badgeage result = new Badgeage();
+        if(!test.isPresent())
+            result = badgeageService.save(badgeage);
         return ResponseEntity.created(new URI("/api/badgeages/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
