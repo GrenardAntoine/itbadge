@@ -60,13 +60,11 @@
                             <th>Présence matin</th>
                             <th>Présence après-midi</th>
                         </tr>
-                        <!--
                         <tr *ngFor="let eleve of listCurrentEleve">
-                            <td>{{eleve.user.nom}} {{eleve.user.prenom}}</td>
-                            <td>{{eleve.listBadgeage[0]?.badgeageEleve.format('HH:mm')}}</td>
-                            <td>{{eleve.listBadgeage[1]?.badgeageEleve.format('HH:mm')}}</td>
+                            <td>{{eleve.user.firstName}} {{eleve.user.lastName}}</td>
+                            <td>{{eleve.listBageages[0]?.badgeageEleve.format('HH:mm')}}</td>
+                            <td>{{eleve.listBageages[1]?.badgeageEleve.format('HH:mm')}}</td>
                         </tr>
-                        -->
                     </table>
                 </div>
             </div>

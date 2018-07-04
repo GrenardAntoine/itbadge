@@ -51,7 +51,6 @@ public class Cours implements Serializable {
     private Description description;
 
     @ManyToMany(mappedBy = "listCours", fetch = FetchType.EAGER)
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Groupe> listGroupes = new HashSet<>();
 

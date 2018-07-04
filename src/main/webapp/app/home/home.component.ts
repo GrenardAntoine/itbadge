@@ -7,10 +7,11 @@ import { Router } from '@angular/router';
 import { ICours } from '../shared/model/cours.model';
 import { IUtilisateur } from '../shared/model/utilisateur.model';
 import { IBadgeage } from '../shared/model/badgeage.model';
+import { IGroupe } from '../shared/model/groupe.model';
 
 import { CoursService } from '../entities/cours/cours.service';
 import { BadgeageService } from '../entities/badgeage/badgeage.service';
-import { UtilisateurService } from '../entities/utilisateur/utilisateur.service';
+import { GroupeService } from '../entities/groupe/groupe.service';
 
 import moment = require('moment');
 
@@ -31,7 +32,7 @@ export class HomeComponent implements OnInit {
         private router: Router,
         private coursService: CoursService,
         private badgeageService: BadgeageService,
-        private utilisateurService: UtilisateurService
+        private groupeService: GroupeService
     ) {}
 
     ngOnInit() {
@@ -43,12 +44,13 @@ export class HomeComponent implements OnInit {
                 this.coursService.getCurrentCours().subscribe(res => {
                     this.cours = res.body;
                     let dateCours = this.cours.dateDebut.format('YYYY-MM-DD');
-                    for (groupe in this.cours.listGroupes) {
+
+                    this.cours.listGroupes.forEach(groupe => {
                         this.groupeService.findBadgeageGroupe(groupe.id, dateCours).subscribe(res => {
-                            this.listCurrentEleve.push(res[0].listEleves);
+                            this.listCurrentEleve = this.listCurrentEleve.concat(res.body.listEleves);
                             console.log(this.listCurrentEleve);
                         });
-                    }
+                    });
                 });
             } else if (this.account.authorities.includes('ROLE_USER')) {
                 this.coursService.getCurrentCours().subscribe(res => {

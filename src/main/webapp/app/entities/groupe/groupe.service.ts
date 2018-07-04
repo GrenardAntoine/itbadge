@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IGroupe } from 'app/shared/model/groupe.model';
+import { IUtilisateur } from '../../shared/model/utilisateur.model';
+import { IBadgeage } from '../../shared/model/badgeage.model';
+import moment = require('moment');
 
 type EntityResponseType = HttpResponse<IGroupe>;
 type EntityArrayResponseType = HttpResponse<IGroupe[]>;
@@ -36,7 +39,20 @@ export class GroupeService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.listEleves.forEach((utilisateur: IUtilisateur) => {
+            utilisateur.listBageages.forEach((badgeage: IBadgeage) => {
+                badgeage.currentDate = badgeage.currentDate != null ? moment(badgeage.currentDate) : null;
+                badgeage.badgeageEleve = badgeage.badgeageEleve != null ? moment(badgeage.badgeageEleve) : null;
+                badgeage.badgeageCorrige = badgeage.badgeageCorrige != null ? moment(badgeage.badgeageCorrige) : null;
+            });
+        });
+        return res;
+    }
+
     findBadgeageGroupe(id: number, date: string): Observable<EntityResponseType> {
-        return this.http.get<IGroupe>(this.resourceUrl + '/badgeageGroupe/' + id + '/' + date, { observe: 'response' });
+        return this.http
+            .get<IGroupe>(this.resourceUrl + '/badgeageGroupe/' + id + '/' + date, { observe: 'response' })
+            .map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res));
     }
 }
