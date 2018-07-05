@@ -152,4 +152,12 @@ public class CoursResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/cours/currentProfesseur")
+    @Timed
+    ResponseEntity<List<Cours>> getListCoursByCurrentProfesseur(Pageable pageable) {
+        log.debug("REST request to get a page of Cours");
+        Page<Cours> page = coursService.getListCoursByCurrentProfesseur(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/cours");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

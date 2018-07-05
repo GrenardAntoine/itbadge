@@ -6,7 +6,7 @@
     </div>
 
     <div *ngIf="isEleve()" class="justify-content-center">
-        <div *ngIf="cours != null">
+        <div *ngIf="cours != null && listBadgeage != null">
             <div class="row">
                 <div class="col">
                     <table class="table table-bordered">
@@ -17,14 +17,28 @@
                         </tr>
                         <tr>
                             <td>{{ cours.nom }}</td>
-                            <td ng-class="badgeage_matin_error ? 'td-error' :">{{ listBadgeage[0]?.badgeageEleve.format('HH:mm')}}</td>
-                            <td ng-class="badgeage_aprem_error ? 'td-error' :">{{ listBadgeage[1]?.badgeageEleve.format('HH:mm')}}</td>
+                            <td>
+                                <span *ngIf="listBadgeage[0]?.badgeageEleve.format('HH:mm') !== '00:00'">
+                                    {{ listBadgeage[0]?.badgeageEleve.format('HH:mm') }}
+                                </span>
+                                <span *ngIf="listBadgeage[0]?.badgeageEleve.format('HH:mm') === '00:00'">
+                                    Absent
+                                </span>
+                            </td>
+                            <td>
+                                <span *ngIf="listBadgeage[1]?.badgeageEleve.format('HH:mm') !== '00:00'">
+                                    {{ listBadgeage[1]?.badgeageEleve.format('HH:mm') }}
+                                </span>
+                                <span *ngIf="listBadgeage[1]?.badgeageEleve.format('HH:mm') === '00:00'">
+                                    Absent
+                                </span>
+                            </td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-8 col-sm-12">
+                <div class="col-12">
                     <button class="btn btn-success" (click)="badger()">Badger</button>
                 </div>
             </div>
@@ -47,11 +61,6 @@
                     Cours du jour : {{ cours.nom }}
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-sm-12">
-                    <button class="btn btn-success">Faire l'appel</button>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-md-8 col-sm-12">
                     <table class="table table-bordered">
@@ -62,8 +71,22 @@
                         </tr>
                         <tr *ngFor="let eleve of listCurrentEleve">
                             <td>{{eleve.user.firstName}} {{eleve.user.lastName}}</td>
-                            <td>{{eleve.listBageages[0]?.badgeageEleve.format('HH:mm')}}</td>
-                            <td>{{eleve.listBageages[1]?.badgeageEleve.format('HH:mm')}}</td>
+                            <td>
+                                <span *ngIf="eleve.listBageages[0]?.badgeageEleve.format('HH:mm') !== '00:00'">
+                                    {{ eleve.listBageages[0]?.badgeageEleve.format('HH:mm') }}
+                                </span>
+                                <span *ngIf="eleve.listBageages[0]?.badgeageEleve.format('HH:mm') === '00:00'">
+                                    Absent
+                                </span>
+                            </td>
+                            <td>
+                                <span *ngIf="eleve.listBageages[1]?.badgeageEleve.format('HH:mm') !== '00:00'">
+                                    {{ eleve.listBageages[1]?.badgeageEleve.format('HH:mm') }}
+                                </span>
+                                <span *ngIf="eleve.listBageages[1]?.badgeageEleve.format('HH:mm') === '00:00'">
+                                    Absent
+                                </span>
+                            </td>
                         </tr>
                     </table>
                 </div>

@@ -2,18 +2,11 @@
     <h1>Cours</h1>
 
     <div class="row">
-        <div class="col">
+        <div class="col-6">
             Cours : <br>
-            <select class="form-control" (change)="changeCoursName($event.target.value)">
+            <select class="form-control" (change)="changeCours($event.target.value)">
                 <option></option>
-                <option *ngFor="let cours of listCours" [value]="cours.nom">{{cours.nom}}</option>
-            </select>
-        </div>
-        <div class="col">
-            Horaire : <br>
-            <select class="form-control" (change)="changeCoursDate($event.target.value)">
-                <option></option>
-                <option *ngFor="let cours of listCours" [value]="cours.id">{{cours.nom}} {{cours.dateDebut}}</option>
+                <option *ngFor="let cours of listCours" [value]="cours.id">{{cours.dateDebut.format('DD/MM/YY')}} {{cours.nom}}</option>
             </select>
         </div>
     </div>
@@ -93,20 +86,41 @@
                         <tr *ngFor="let eleve of listCurrentEleve">
                             <td>{{eleve.user.firstName}} {{eleve.user.lastName}}</td>
 
-                            <td>{{ eleve.listBageages[0]?.badgeageEleve.format('HH:mm') }}</td>
+                            <td>
+                                <span *ngIf="eleve.listBageages[0]?.badgeageEleve.format('HH:mm') !== '00:00'">
+                                    {{ eleve.listBageages[0]?.badgeageEleve.format('HH:mm') }}
+                                </span>
+                                <span *ngIf="eleve.listBageages[0]?.badgeageEleve.format('HH:mm') === '00:00'">
+                                    Absent
+                                </span>
+                            </td>
 
                             <td>
-                                <input type="text" name="{{eleve.id}}-0"
+                                <span *ngIf="eleve.listBageages[0]?.badgeageCorrige === null || eleve.listBageages[0]?.badgeageCorrige.format('HH:mm') !== '00:00'">
+                                    <input type="text" name="{{eleve.id}}-0"
                                        [ngModel]="eleve.listBageages[0].badgeageCorrige | date: 'HH:mm'"
-                                       (ngModelChange)="changeHourMinute(eleve.listBageages[0].badgeageCorrige, $event)">
+                                       (ngModelChange)="changeHourMinute(eleve.listBageages[0], $event)">
+                                </span>
+                                <span *ngIf="eleve.listBageages[0]?.badgeageCorrige !== null && eleve.listBageages[0]?.badgeageCorrige.format('HH:mm') === '00:00'">
+                                    <input type="text" name="{{eleve.id}}-0"
+                                           value="Absent"
+                                           (ngModelChange)="changeHourMinute(eleve.listBageages[0], $event)">
+                                </span>
                             </td>
 
                             <td>{{ eleve.listBageages[1]?.badgeageEleve.format('HH:mm')}}</td>
 
                             <td>
-                                <input type="text" name="{{eleve.id}}-1"
-                                       [ngModel]="eleve.listBageages[1].badgeageCorrige | date: 'HH:mm'"
-                                       (ngModelChange)="changeHourMinute(eleve.listBageages[1].badgeageCorrige, $event)">
+                                <span *ngIf="eleve.listBageages[1]?.badgeageCorrige === null || eleve.listBageages[1]?.badgeageCorrige.format('HH:mm') !== '00:00'">
+                                    <input type="text" name="{{eleve.id}}-1"
+                                           [ngModel]="eleve.listBageages[1].badgeageCorrige | date: 'HH:mm'"
+                                           (ngModelChange)="changeHourMinute(eleve.listBageages[1], $event)">
+                                </span>
+                                <span *ngIf="eleve.listBageages[1]?.badgeageCorrige !== null && eleve.listBageages[1]?.badgeageCorrige.format('HH:mm') === '00:00'">
+                                    <input type="text" name="{{eleve.id}}-1"
+                                           value="Absent"
+                                           (ngModelChange)="changeHourMinute(eleve.listBageages[1], $event)">
+                                </span>
                             </td>
 
                             <!--

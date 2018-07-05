@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 /**
@@ -23,6 +24,7 @@ public interface BadgeageRepository extends JpaRepository<Badgeage, Long> {
 
     Page<Badgeage> findByUtilisateurAndCurrentDate(Utilisateur utilisateur, LocalDate currentDate, Pageable pageable);
 
-
     Optional<Badgeage> findByUtilisateur(Utilisateur utilisateur);
+
+    List<Badgeage> findByUtilisateurAndCurrentDate(Utilisateur utilisateur, LocalDate localNow);
 }

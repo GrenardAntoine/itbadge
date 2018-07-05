@@ -14,9 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 /**
  * Service Implementation for managing Badgeage.
  */
@@ -100,5 +104,52 @@ public class BadgeageServiceImpl implements BadgeageService {
     @Override
     public Optional<Badgeage> findByUtilisateur(Utilisateur utilisateur) {
         return badgeageRepository.findByUtilisateur(utilisateur);
+    }
+
+    @Override
+    public Badgeage addBadgageUser() {
+
+
+        LocalDate localNow = LocalDate.now();
+        Instant instantNow = Instant.now();
+        Instant hour0 = Instant.now().with(ChronoField.HOUR_OF_DAY, 0)
+            .with(ChronoField.MINUTE_OF_HOUR, 0)
+            .with(ChronoField.SECOND_OF_MINUTE, 0)
+            .with(ChronoField.MILLI_OF_SECOND, 0);
+        Instant hour08 = Instant.now().with(ChronoField.HOUR_OF_DAY, 8)
+            .with(ChronoField.MINUTE_OF_HOUR, 0)
+            .with(ChronoField.SECOND_OF_MINUTE, 0)
+            .with(ChronoField.MILLI_OF_SECOND, 0);
+        Instant hour13 = Instant.now().with(ChronoField.HOUR_OF_DAY, 13)
+            .with(ChronoField.MINUTE_OF_HOUR, 0)
+            .with(ChronoField.SECOND_OF_MINUTE, 0)
+            .with(ChronoField.MILLI_OF_SECOND, 0);
+        Instant hour12 = Instant.now().with(ChronoField.HOUR_OF_DAY, 12)
+            .with(ChronoField.MINUTE_OF_HOUR, 0)
+            .with(ChronoField.SECOND_OF_MINUTE, 0)
+            .with(ChronoField.MILLI_OF_SECOND, 0);
+        Instant hour18 = Instant.now().with(ChronoField.HOUR_OF_DAY, 18)
+            .with(ChronoField.MINUTE_OF_HOUR, 0)
+            .with(ChronoField.SECOND_OF_MINUTE, 0)
+            .with(ChronoField.MILLI_OF_SECOND, 0);
+
+        if(instantNow.isAfter(hour08) && instantNow.isBefore(hour18)) {
+            List<Badgeage> listBadgeage = badgeageRepository.findByUtilisateurAndCurrentDate(utilisateurService.getCurrentUtilisateur().get(), localNow);
+
+            if (instantNow.isAfter(hour08) && instantNow.isBefore(hour12)) {
+                if (listBadgeage.get(0).getBadgeageEleve() == hour0) {
+                    listBadgeage.get(0).setBadgeageEleve(instantNow);
+                    badgeageRepository.save(listBadgeage.get(0));
+                }
+            }
+            //TODO : Put 13 here
+            if (instantNow.isAfter(hour12) && instantNow.isBefore(hour18)) {
+                if (listBadgeage.get(1).getBadgeageEleve() == hour0) {
+                    listBadgeage.get(1).setBadgeageEleve(instantNow);
+                    badgeageRepository.save(listBadgeage.get(1));
+                }
+            }
+        }
+        return null;
     }
 }

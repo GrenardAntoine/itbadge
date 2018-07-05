@@ -9,10 +9,8 @@ import { HttpResponse } from '@angular/common/http';
 import { IDescription } from '../shared/model/description.model';
 import { IUtilisateur } from '../shared/model/utilisateur.model';
 import { GroupeService } from '../entities/groupe/groupe.service';
-import { forEach } from '@angular/router/src/utils/collection';
-import { FormGroup } from '@angular/forms';
-import { UtilisateurService } from '../entities/utilisateur/utilisateur.service';
 import { BadgeageService } from '../entities/badgeage/badgeage.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'jhi-cours',
@@ -42,15 +40,11 @@ export class CoursComponent implements OnInit {
 
     ngOnInit() {
         this.coursService
-            .query()
+            .getListCoursByCurrentProfesseur()
             .subscribe((res: HttpResponse<ICours[]>) => (this.listCours = res.body), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
-    // TODO : Implement when PAF has done listCoursName
-    changeCoursName(nom) {}
-
-    // TODO : Implement when PAF has done listCoursName
-    changeCoursDate(id) {
+    changeCours(id) {
         this.cours = null;
         this.listCurrentEleve = [];
         this.nbBadgeageMatin = 0;
@@ -72,7 +66,6 @@ export class CoursComponent implements OnInit {
     countBadgeage() {
         let dateMidi = this.cours.dateDebut;
         dateMidi.set({ hour: 12, minute: 0, second: 0, millisecond: 0 });
-        console.log(dateMidi);
 
         this.listCurrentEleve.forEach(eleve => {
             eleve.listBageages.forEach(badgeage => {
@@ -90,11 +83,31 @@ export class CoursComponent implements OnInit {
         });
     }
 
-    changeHourMinute(badgeageCorrige, event) {
+    changeHourMinute(badgeage, event) {
         if (event.indexOf(':') === 2 && event.length === 5) {
             let hour = event.substr(0, 2);
             let minute = event.substr(3, 5);
-            badgeageCorrige.set({ hour: hour, minute: minute });
+
+            if (badgeage.badgeageCorrige == null) {
+                badgeage.badgeageCorrige = new moment();
+                badgeage.badgeageCorrige.set({
+                    day: badgeage.currentDate.day(),
+                    month: badgeage.currentDate.month(),
+                    year: badgeage.currentDate.year()
+                });
+            }
+            badgeage.badgeageCorrige.set({ hour: hour, minute: minute });
+        }
+        if (event === 'abs') {
+            if (badgeage.badgeageCorrige == null) {
+                badgeage.badgeageCorrige = new moment();
+                badgeage.badgeageCorrige.set({
+                    day: badgeage.currentDate.day(),
+                    month: badgeage.currentDate.month(),
+                    year: badgeage.currentDate.year()
+                });
+            }
+            badgeage.badgeageCorrige.set({ hour: 0, minute: 0 });
         }
     }
 }

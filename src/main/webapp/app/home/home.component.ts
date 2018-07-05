@@ -55,10 +55,12 @@ export class HomeComponent implements OnInit {
             } else if (this.account.authorities.includes('ROLE_USER')) {
                 this.coursService.getCurrentCours().subscribe(res => {
                     this.cours = res.body;
+                    console.log(this.cours);
                 });
 
                 this.badgeageService.getListTodayBadgeageForStudent().subscribe(res => {
                     this.listBadgeage = res.body;
+                    console.log(this.listBadgeage);
                 });
             }
         });

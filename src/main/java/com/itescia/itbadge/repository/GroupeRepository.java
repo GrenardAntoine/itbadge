@@ -32,8 +32,9 @@ public interface GroupeRepository extends JpaRepository<Groupe, Long> {
 
     Set<Groupe> findByListCoursContains(Cours cours);
 
-    @Query(value ="select groupe from Groupe groupe left join fetch groupe.listEleves as eleve left join fetch eleve.listBageages badgeage " +
-        "where badgeage.currentDate =:day and groupe.id =:groupeid",
+    @Query(value ="select groupe from Groupe groupe left join fetch groupe.listEleves as eleve left join fetch eleve.listBageages as badgeage " +
+        "where badgeage.currentDate =:day and groupe.id =:groupeid " +
+        "order by badgeage.id",
         countQuery = "select count(distinct groupe) from Groupe groupe")
     Optional<Groupe> findBadgeageGroupe(@Param("day") LocalDate day, @Param("groupeid") Long groupeId);
 }

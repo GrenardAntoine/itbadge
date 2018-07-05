@@ -53,4 +53,6 @@ public interface BadgeageService {
     Page<Badgeage> findByUtilisateurAndCurrentDate(Pageable pageable);
 
     Optional<Badgeage> findByUtilisateur(Utilisateur utilisateur);
+
+    Badgeage addBadgageUser();
 }
