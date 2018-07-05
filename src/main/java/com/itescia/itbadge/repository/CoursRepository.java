@@ -28,6 +28,7 @@ public interface CoursRepository extends JpaRepository<Cours, Long> {
 
     Page<Cours> findByListProfesseursContains(Utilisateur professeur, Pageable pageable);
 
+    //@Query("select distinct cours.nom from Cours cours where ?1 in (select cours0.listProfesseurs from  Cours cours0)")
     Page<Cours> findDistinctByListProfesseursContains(Utilisateur professeur, Pageable pageable);
 
     @Query("select cours from Cours cours where :utilisateur member cours.listProfesseurs")
