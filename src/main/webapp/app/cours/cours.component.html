@@ -108,7 +108,14 @@
                                 </span>
                             </td>
 
-                            <td>{{ eleve.listBageages[1]?.badgeageEleve.format('HH:mm')}}</td>
+                            <td>
+                                <span *ngIf="eleve.listBageages[1]?.badgeageEleve.format('HH:mm') !== '00:00'">
+                                    {{ eleve.listBageages[1]?.badgeageEleve.format('HH:mm') }}
+                                </span>
+                                <span *ngIf="eleve.listBageages[1]?.badgeageEleve.format('HH:mm') === '00:00'">
+                                    Absent
+                                </span>
+                            </td>
 
                             <td>
                                 <span *ngIf="eleve.listBageages[1]?.badgeageCorrige === null || eleve.listBageages[1]?.badgeageCorrige.format('HH:mm') !== '00:00'">

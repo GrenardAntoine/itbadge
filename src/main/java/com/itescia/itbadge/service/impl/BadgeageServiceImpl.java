@@ -5,6 +5,10 @@ import com.itescia.itbadge.service.BadgeageService;
 import com.itescia.itbadge.domain.Badgeage;
 import com.itescia.itbadge.repository.BadgeageRepository;
 import com.itescia.itbadge.service.UtilisateurService;
+import com.itescia.itbadge.web.rest.errors.BadRequestAlertException;
+import com.itescia.itbadge.web.rest.errors.CustomParameterizedException;
+import org.h2.tools.Console;
+import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -109,47 +116,42 @@ public class BadgeageServiceImpl implements BadgeageService {
     @Override
     public Badgeage addBadgageUser() {
 
+        DateTimeFormatter formatter = DateTimeFormatter
+            .ofPattern ( "yyyy-MM-dd HH:mm:ss" )
+            .withLocale( Locale.FRANCE )
+            .withZone( ZoneId.of("UTC+2"));
 
         LocalDate localNow = LocalDate.now();
         Instant instantNow = Instant.now();
-        Instant hour0 = Instant.now().with(ChronoField.HOUR_OF_DAY, 0)
-            .with(ChronoField.MINUTE_OF_HOUR, 0)
-            .with(ChronoField.SECOND_OF_MINUTE, 0)
-            .with(ChronoField.MILLI_OF_SECOND, 0);
-        Instant hour08 = Instant.now().with(ChronoField.HOUR_OF_DAY, 8)
-            .with(ChronoField.MINUTE_OF_HOUR, 0)
-            .with(ChronoField.SECOND_OF_MINUTE, 0)
-            .with(ChronoField.MILLI_OF_SECOND, 0);
-        Instant hour13 = Instant.now().with(ChronoField.HOUR_OF_DAY, 13)
-            .with(ChronoField.MINUTE_OF_HOUR, 0)
-            .with(ChronoField.SECOND_OF_MINUTE, 0)
-            .with(ChronoField.MILLI_OF_SECOND, 0);
-        Instant hour12 = Instant.now().with(ChronoField.HOUR_OF_DAY, 12)
-            .with(ChronoField.MINUTE_OF_HOUR, 0)
-            .with(ChronoField.SECOND_OF_MINUTE, 0)
-            .with(ChronoField.MILLI_OF_SECOND, 0);
-        Instant hour18 = Instant.now().with(ChronoField.HOUR_OF_DAY, 18)
-            .with(ChronoField.MINUTE_OF_HOUR, 0)
-            .with(ChronoField.SECOND_OF_MINUTE, 0)
-            .with(ChronoField.MILLI_OF_SECOND, 0);
+        Instant hour0 = Instant.from(formatter.parse(localNow + " 00:00:00"));
+        Instant hour08 = Instant.from(formatter.parse(localNow + " 08:00:00"));
+        Instant hour13 = Instant.from(formatter.parse(localNow + " 13:00:00"));
+        Instant hour12 = Instant.from(formatter.parse(localNow + " 12:00:00"));
+        Instant hour18 = Instant.from(formatter.parse(localNow + " 18:00:00"));
 
         if(instantNow.isAfter(hour08) && instantNow.isBefore(hour18)) {
             List<Badgeage> listBadgeage = badgeageRepository.findByUtilisateurAndCurrentDate(utilisateurService.getCurrentUtilisateur().get(), localNow);
 
             if (instantNow.isAfter(hour08) && instantNow.isBefore(hour12)) {
-                if (listBadgeage.get(0).getBadgeageEleve() == hour0) {
+                if (listBadgeage.get(0).getBadgeageEleve().equals(hour0)) {
                     listBadgeage.get(0).setBadgeageEleve(instantNow);
-                    badgeageRepository.save(listBadgeage.get(0));
+                    return badgeageRepository.save(listBadgeage.get(0));
+                } else {
+                    throw new CustomParameterizedException("AlreadyDone");
                 }
             }
-            //TODO : Put 13 here
-            if (instantNow.isAfter(hour12) && instantNow.isBefore(hour18)) {
-                if (listBadgeage.get(1).getBadgeageEleve() == hour0) {
+
+            if (instantNow.isAfter(hour13) && instantNow.isBefore(hour18)) {
+                if (listBadgeage.get(1).getBadgeageEleve().equals(hour0)) {
+                    System.out.println("4");
                     listBadgeage.get(1).setBadgeageEleve(instantNow);
-                    badgeageRepository.save(listBadgeage.get(1));
+                    return badgeageRepository.save(listBadgeage.get(1));
+                } else {
+                    throw new CustomParameterizedException("AlreadyDone");
                 }
             }
         }
-        return null;
+
+        throw new CustomParameterizedException("OutOfOpeningTime");
     }
 }
