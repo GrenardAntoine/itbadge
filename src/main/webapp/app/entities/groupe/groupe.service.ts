@@ -47,6 +47,9 @@ export class GroupeService {
                 badgeage.badgeageCorrige = badgeage.badgeageCorrige != null ? moment(badgeage.badgeageCorrige) : null;
             });
         });
+        res.body.listEleves.forEach((utilisateur: IUtilisateur) => {
+            utilisateur.listBageages.sort((a, b) => a.id - b.id);
+        });
         return res;
     }
 

@@ -49,4 +49,6 @@ public interface CoursService {
     Page<Cours> findByListProfesseurs(Pageable pageable);
 
     Page<Cours> findByListProfesseursUnique(Pageable pageable);
+
+    Page<Cours> getListCoursByCurrentProfesseur(Pageable pageable);
 }

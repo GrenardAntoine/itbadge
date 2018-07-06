@@ -6,6 +6,7 @@ import com.itescia.itbadge.domain.Utilisateur;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
@@ -29,4 +30,7 @@ public interface CoursRepository extends JpaRepository<Cours, Long> {
 
     //@Query("select distinct cours.nom from Cours cours where ?1 in (select cours0.listProfesseurs from  Cours cours0)")
     Page<Cours> findDistinctByListProfesseursContains(Utilisateur professeur, Pageable pageable);
+
+    @Query("select cours from Cours cours where :utilisateur member cours.listProfesseurs")
+    Page<Cours> getListCoursByCurrentProfesseur(@Param("utilisateur")Utilisateur utilisateur, Pageable pageable);
 }

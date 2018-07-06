@@ -159,14 +159,7 @@ public class BadgeageResource {
     public ResponseEntity<Badgeage> createBadgeageUser() throws URISyntaxException {
         log.debug("REST request to save Badgeage");
 
-        Badgeage badgeage = new Badgeage();
-        badgeage.setCurrentDate(LocalDate.now());
-        badgeage.setBadgeageEleve(Instant.now());
-        badgeage.setUtilisateur(utilisateurService.getCurrentUtilisateur().get());
-        Optional<Badgeage> test = badgeageService.findIfBadgeageExist();
-        Badgeage result = new Badgeage();
-        if(!test.isPresent())
-            result = badgeageService.save(badgeage);
+        Badgeage result = badgeageService.addBadgageUser();
         return ResponseEntity.created(new URI("/api/badgeages/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

@@ -75,4 +75,10 @@ export class CoursService {
             .get<ICours>(`${this.resourceUrl}/current`, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertDateFromServer(res));
     }
+
+    getListCoursByCurrentProfesseur(): Observable<EntityArrayResponseType> {
+        return this.http
+            .get<ICours[]>(this.resourceUrl + '/currentProfesseur', { observe: 'response' })
+            .map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res));
+    }
 }

@@ -54,5 +54,5 @@ public interface BadgeageService {
 
     Optional<Badgeage> findByUtilisateur(Utilisateur utilisateur);
 
-    Optional<Badgeage> findIfBadgeageExist();
+    Badgeage addBadgageUser();
 }

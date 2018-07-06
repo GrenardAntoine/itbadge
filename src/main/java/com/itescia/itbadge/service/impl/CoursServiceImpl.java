@@ -124,4 +124,11 @@ public class CoursServiceImpl implements CoursService {
         }
         return null;
     }
+
+    @Override
+    public Page<Cours> getListCoursByCurrentProfesseur(Pageable pageable) {
+        Optional<Utilisateur> utilisateur = utilisateurService.getCurrentUtilisateur();
+
+        return coursRepository.getListCoursByCurrentProfesseur(utilisateur.get(),pageable);
+    }
 }
