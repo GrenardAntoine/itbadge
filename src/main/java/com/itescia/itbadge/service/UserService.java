@@ -117,6 +117,9 @@ public class UserService {
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
+        System.out.println();
+        System.out.println(userDTO.getLogin());
+        System.out.println();
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -133,7 +136,6 @@ public class UserService {
                 .map(Optional::get)
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
-            System.err.println(user.getAuthorities().toString());
         }
        
         String encryptedPassword = new BCryptPasswordEncoder().encode(RandomUtil.generatePassword());;
@@ -144,6 +146,11 @@ public class UserService {
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
+        
+        System.out.println();
+        System.out.println(user.getLogin());
+        System.out.println();
+        
         return user;
     }
 

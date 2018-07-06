@@ -50,7 +50,7 @@ public class Utilisateur implements Serializable {
                inverseJoinColumns = @JoinColumn(name = "list_cours_id", referencedColumnName = "id"))
     private Set<Cours> listCours = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(unique = true)
     private User user;
 

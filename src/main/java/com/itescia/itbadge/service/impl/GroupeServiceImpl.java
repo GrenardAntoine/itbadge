@@ -107,4 +107,9 @@ public class GroupeServiceImpl implements GroupeService {
     public Optional<Groupe> findBadgeageGroupe(LocalDate day, Long groupId) {
         return groupeRepository.findBadgeageGroupe(day, groupId);
     }
+    
+    @Override
+    public Optional<Groupe> findByName(String groupname) {
+        return groupeRepository.findByNom(groupname);
+    }
 }

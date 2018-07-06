@@ -5,9 +5,13 @@ import com.itescia.itbadge.domain.Groupe;
 import com.itescia.itbadge.repository.CoursRepository;
 import com.itescia.itbadge.repository.GroupeRepository;
 import com.itescia.itbadge.security.SecurityUtils;
+import com.itescia.itbadge.service.UploadService;
 import com.itescia.itbadge.service.UtilisateurService;
 import com.itescia.itbadge.domain.Utilisateur;
 import com.itescia.itbadge.repository.UtilisateurRepository;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
@@ -87,6 +91,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         log.debug("Request to get Utilisateur : {}", id);
         return utilisateurRepository.findOneWithEagerRelationships(id);
     }
+    
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Utilisateur> findOneByLogin(String login) {
+        log.debug("Request to get Utilisateur : {}", login);
+        return utilisateurRepository.findOneByUserLogin(login);
+    }
 
     /**
      * Delete the utilisateur by id.
@@ -98,8 +110,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         log.debug("Request to delete Utilisateur : {}", id);
         utilisateurRepository.deleteById(id);
     }
-
-
 
 
 
@@ -121,4 +131,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return utilisateurRepository.findByCours(currentCours.get(),currentCours.get().getListGroupes(),pageable);
 
     }
+    
+    public void insertUtilisateur() throws EncryptedDocumentException, InvalidFormatException, IOException {
+    	UploadService u = new UploadService(utilisateurRepository, coursRepository, groupeRepository);
+    	u.uploadUtilisateur();
+    }
+    
 }

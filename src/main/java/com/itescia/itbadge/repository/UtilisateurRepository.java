@@ -35,4 +35,5 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
 
     @Query("select distinct utilisateur, badgeage from Utilisateur utilisateur inner join Groupe groupe on groupe = utilisateur.groupe left join Badgeage badgeage on badgeage.utilisateur = utilisateur  inner join Cours cours on cours =:cours and (groupe in (:groupe)) ")
     Page<Utilisateur> findByCours(@Param("cours")Cours cours, @Param("groupe")Set<Groupe> listGroupe, Pageable pageable);
+
 }

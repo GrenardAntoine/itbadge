@@ -8,6 +8,9 @@ import com.itescia.itbadge.web.rest.errors.BadRequestAlertException;
 import com.itescia.itbadge.web.rest.util.HeaderUtil;
 import com.itescia.itbadge.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -141,4 +146,13 @@ public class UtilisateurResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/utilisateurs/currentCours"));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    
+    
+    @GetMapping("/utilisateurs/testInsertUser")
+    @Timed
+    public void insertUtilisateur() throws EncryptedDocumentException, InvalidFormatException, IOException {
+        log.debug("REST request to insert Utilisateur : {}");
+        utilisateurService.insertUtilisateur();
+    }
+        
 }

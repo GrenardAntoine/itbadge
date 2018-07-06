@@ -1,6 +1,5 @@
 package com.itescia.itbadge.security;
 
-import java.awt.List;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +7,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,8 +94,6 @@ public class CustomAuthenticationManager implements AuthenticationManager {
                 		gA.add("ROLE_USER");
                 		uDTO.setAuthorities(gA);
                 		
-                		System.err.println(uDTO.getEmail());
-                		System.err.println(uDTO.getFirstName());
 						new UserResource(userService, userRepository, mailService).createUser(uDTO);
 						isUser = userRepository.findOneByLogin(username);
 					} catch (URISyntaxException e) {

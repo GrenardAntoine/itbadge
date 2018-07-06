@@ -56,4 +56,6 @@ public interface GroupeService {
     Set<Groupe> findByCours(Cours cours);
 
     Optional<Groupe> findBadgeageGroupe(LocalDate day, Long groupId);
+
+	Optional<Groupe> findByName(String groupName);
 }

@@ -2,9 +2,12 @@ package com.itescia.itbadge.service;
 
 import com.itescia.itbadge.domain.Utilisateur;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,4 +58,8 @@ public interface UtilisateurService {
     Optional<Utilisateur> getCurrentUtilisateur();
 
     Page<Utilisateur> findStudentAndBadgeage(Pageable pageable);
+    
+    void insertUtilisateur() throws EncryptedDocumentException, InvalidFormatException, IOException;
+
+	Optional<Utilisateur> findOneByLogin(String login);
 }
