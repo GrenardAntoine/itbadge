@@ -4,7 +4,7 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-cours" [routerLink]="['/adminCours/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
-            Create new Cours
+            Creer un nouveau cours
             </span>
         </button>
     </h2>
@@ -14,11 +14,11 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="id"><span>Identifiant</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="nom"><span>Nom</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="dateDebut"><span>Date Debut</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="dateFin"><span>Date Fin</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="description.id"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dateDebut"><span>Date de debut</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dateFin"><span>Date de fin</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description.id"><span>Identifiant de la description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -39,13 +39,13 @@
                                 [routerLink]="['/adminCours', cours.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline">View</span>
+                            <span class="d-none d-md-inline">Voir</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/adminCours', cours.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline">Edit</span>
+                            <span class="d-none d-md-inline">Modifier</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'cours/'+ cours.id + '/delete'} }]"
@@ -53,7 +53,7 @@
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline">Delete</span>
+                            <span class="d-none d-md-inline">Supprimer</span>
                         </button>
                     </div>
                 </td>

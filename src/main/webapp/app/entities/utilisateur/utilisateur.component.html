@@ -4,7 +4,7 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-utilisateur" [routerLink]="['/utilisateur/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
-            Create new Utilisateur
+            Creer un nouvel utilisateur
             </span>
         </button>
     </h2>
@@ -14,11 +14,11 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="isAdmin"><span>Is Admin</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="isProfesseur"><span>Is Professeur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="groupe.id"><span>Groupe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="user.login"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="id"><span>Identifiant</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="isAdmin"><span>Est administrateur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="isProfesseur"><span>Est Professeur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupe.id"><span>Classe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="user.login"><span>Nom Prenom</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -41,13 +41,13 @@
                                 [routerLink]="['/utilisateur', utilisateur.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline">View</span>
+                            <span class="d-none d-md-inline">Voir</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/utilisateur', utilisateur.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline">Edit</span>
+                            <span class="d-none d-md-inline">Modifier</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'utilisateur/'+ utilisateur.id + '/delete'} }]"
@@ -55,7 +55,7 @@
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline">Delete</span>
+                            <span class="d-none d-md-inline">Supprimer</span>
                         </button>
                     </div>
                 </td>
