@@ -47,7 +47,7 @@ public class UploadService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
     private static final String Upload_User_FILE_PATH = "C:\\Users\\Itescia\\git\\itbadge\\user\\uploadUser.xlsx";
     private static final String Upload_Cours_FILE_PATH = "C:\\Users\\Itescia\\git\\itbadge\\user\\";
-    
+
     @Autowired
     private final UtilisateurRepository utilisateurRepository;
 
@@ -56,20 +56,23 @@ public class UploadService {
 
     @Autowired
     private final GroupeRepository groupeRepository;
-    
-    
+
+
     public UploadService(UtilisateurRepository uR, CoursRepository cR, GroupeRepository gR) {
     	this.utilisateurRepository = uR;
     	this.coursRepository = cR;
     	this.groupeRepository = gR;
     }
-        
-    
+
+    public void uploadFile(File file){
+
+    }
+
     public void uploadCours()
     {
-    	
+
     }
-    
+
     public void uploadUtilisateur() throws IOException, EncryptedDocumentException, InvalidFormatException
     {
     	log.debug("Ajout des utilisateurs à la BDD");
@@ -92,7 +95,7 @@ public class UploadService {
             		ArrayList<String> listUtilisateur = new ArrayList<String>();
 		            // Now let's iterate over the columns of the current row
 		            Iterator<Cell> cellIterator = row.cellIterator();
-		            
+
 		            while (cellIterator.hasNext()) {
 		                Cell cell = cellIterator.next();
 		                String cellValue = dataFormatter.formatCellValue(cell);
@@ -101,7 +104,7 @@ public class UploadService {
 		            UtilisateurService uS = new UtilisateurServiceImpl(utilisateurRepository, coursRepository, groupeRepository);
 		            Utilisateur util = new Utilisateur();
 		            User user = new User();
-		            					
+
 					System.out.println(listUtilisateur.get(2));
 		            user.setLastName(listUtilisateur.get(0));
 		            user.setFirstName(listUtilisateur.get(1));
@@ -114,14 +117,14 @@ public class UploadService {
 		            Authority a = new Authority();
 		            a.setName("ROLE_USER");
 		            gA.add(a);
-            		user.setAuthorities(gA);					
+            		user.setAuthorities(gA);
 		            util.setUser(user);
 		            util.setIsAdmin(false);
 		            util.setIsProfesseur(false);
 		            uS.save(util);
-		            		            
+
 		            System.out.println((uS.findOneByLogin(listUtilisateur.get(2).toString())).isPresent());
-		            
+
 		            System.out.println("");
             	}
             	i++;
@@ -132,10 +135,10 @@ public class UploadService {
 
         linkUtilisateurGroupe();
     }
-    
-    
+
+
     public void linkUtilisateurGroupe() throws IOException, EncryptedDocumentException, InvalidFormatException {
-    	
+
     	System.out.println("Insertion des groupes");
     	log.debug("Lien / ajout des groupes");
    	 // Creating a Workbook from an Excel file (.xls or .xlsx)
@@ -158,7 +161,7 @@ public class UploadService {
            		ArrayList<String> listUtilisateur = new ArrayList<String>();
 		            // Now let's iterate over the columns of the current row
 		            Iterator<Cell> cellIterator = row.cellIterator();
-		            
+
 		            while (cellIterator.hasNext()) {
 		                Cell cell = cellIterator.next();
 		                String cellValue = dataFormatter.formatCellValue(cell);
@@ -173,20 +176,20 @@ public class UploadService {
 		            		GroupeService gS = new GroupeServiceImpl(groupeRepository, new CoursServiceImpl(coursRepository, uS));
 		            		Optional<Groupe> group = gS.findByName(listUtilisateur.get(3));
 		            		//System.out.println(group.isPresent());
-		            		 
+
 		            		if(!group.isPresent()) {
 		            			final Groupe groupeAdd = new Groupe();
 		            			groupeAdd.setNom(listUtilisateur.get(3));
 		            			gS.save(groupeAdd);
 		            		}
-		            		group = gS.findByName(listUtilisateur.get(3)); 
+		            		group = gS.findByName(listUtilisateur.get(3));
 		            		utilisateur.setGroupe(group.get());
 		            		uS.save(utilisateur);
-		            		
+
 		            	}
 		            }
-		            					
-		            
+
+
 		            System.out.println();
            	}
            	i++;
@@ -194,7 +197,7 @@ public class UploadService {
 
        // Closing the workbook
        workbook.close();
-    	
+
     }
-    
+
 }

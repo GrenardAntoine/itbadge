@@ -16,6 +16,7 @@ import {
     JhiHealthModalComponent,
     JhiHealthCheckComponent,
     JhiConfigurationComponent,
+    JhiUploadComponent,
     JhiDocsComponent
 } from './';
 
@@ -33,6 +34,7 @@ import {
         UserMgmtDeleteDialogComponent,
         LogsComponent,
         JhiConfigurationComponent,
+        JhiUploadComponent,
         JhiHealthCheckComponent,
         JhiHealthModalComponent,
         JhiDocsComponent,

@@ -19,7 +19,7 @@
                 </a>
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                     <span>
                         <fa-icon [icon]="'th-list'"></fa-icon>
@@ -85,6 +85,12 @@
                             <span>Description</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="admin/jhi-upload" routerLinkActive="active" (click)="collapseNavbar()">
+                            <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
+                            <span>Envoyer des fichier</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
@@ -148,6 +154,14 @@
                 </ul>
             </li>
         -->
+            <li *jhiHasAnyAuthority="'ROLE_PROFESSEUR'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="/cours" (click)="collapseNavbar()">
+                    <span>
+                        <fa-icon [icon]="'home'"></fa-icon>
+                        <span>Cours</span>
+                    </span>
+                </a>
+            </li>
             <li ngbDropdown class="nav-item dropdown pointer" placement="bottom-right" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                   <span *ngIf="!getImageUrl()">
@@ -196,14 +210,7 @@
                 </ul>
             </li>
 
-            <li *jhiHasAnyAuthority="'ROLE_PROFESSEUR'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="/cours" (click)="collapseNavbar()">
-                    <span>
-                        <fa-icon [icon]="'home'"></fa-icon>
-                        <span>Cours</span>
-                    </span>
-                </a>
-            </li>
+
         </ul>
     </div>
 </nav>
